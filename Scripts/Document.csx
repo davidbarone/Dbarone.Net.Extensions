@@ -14,11 +14,16 @@ using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Dynamic;
 
-var xmlFilePath = Args[0];
-var mdFilePath = Args[1];
-Main(xmlFilePath, mdFilePath);
+Main(Args.ToArray());
 
-static void Main(string xmlFilePath, string mdFilePath)
+static void Main(string[] args)
+{
+    Console.WriteLine("Begin: Document.csx...");
+    var xmlFilePath = args[0];
+    var mdFilePath = args[1];
+    XmlToMarkdown(xmlFilePath, mdFilePath);
+}
+static void XmlToMarkdown(string xmlFilePath, string mdFilePath)
 {
     Console.WriteLine(xmlFilePath);
     var xml = xmlFilePath;
@@ -31,55 +36,64 @@ static void Main(string xmlFilePath, string mdFilePath)
     File.WriteAllText(mdFilePath, md);
 }
 
-static var fxNameAndText = new Func<string, XElement, string[]>((att, node) => new[] {
-                    node.Attribute(att).Value,
-                    node.Nodes().ToMarkDown()
+static var fxNameAndText = new Func<string, XElement, IDictionary<string, object>>((att, node) => new Dictionary<string, object> {
+                    {"Name", node.Attribute(att).Value},
+                    {"Text", node.Nodes().ToMarkDown()}
 });
 
-static var templates = new Dictionary<string, string>  {
-                    {"doc", "# {0}\n{1}"},
-                    {"type", "\n\n>## {0}\n\n{1}\n---\n"},
-                    {"field", "### {0}\n{1}\n---\n"},
-                    {"property", "### {0}\n{1}\n---\n"},
-                    {"method", "### {0}\n{1}{2}{3}{4}\n---\n"},
-                    {"event", "### {0}\n{1}\n---\n"},
-                    {"summary", "{0}\n"},
-                    {"remarks", "\n>{0}\n"},
-                    {"example", "_C# code_\n```c#\n{0}\n```\n"},
-                    {"seePage", "[[{1}|{0}]]"},
-                    {"seeAnchor", "[{1}]({0})"},
-                    {"param", "|{0}: |{1}|\n" },
-                    {"exception", "\nException thrown: [{0}](#{0}): {1}\n" },
-                    {"returns", "Returns: {0}\n"},
-                    {"none", ""}  };
+static var templates = new Dictionary<string, Func<dynamic, string>>  {
+                    {"doc", (model) => $"# {model.Name}\n{model.Text}"},
+                    {"type", (model) => $"\n\n>## {model.Name}\n\n{model.Text}\n---\n"},
+                    {"field", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
+                    {"property", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
+                    {"method", (model) =>
+$@"### {model.id}
+Namespace: {model.IdParts.Namespaceb}
+{model.summary}
+{model.paramHeader}
+{model.parameters}
+{model.exceptions}
+---"},
+                    {"event", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
+                    {"summary", (model) => $"{model.Name}\n"},
+                    {"remarks", (model) => $"\n>{model.Name}\n"},
+                    {"example", (model) => $"_C# code_\n```c#\n{model.Name}\n```\n"},
+                    {"seePage", (model) => $"[[{model.Text}|{model.Name}]]"},
+                    {"seeAnchor", (model) => $"[{model.Text}]({model.Name})"},
+                    {"param", (model) => $"|{model.Name}: |{model.Text}|\n" },
+                    {"exception", (model) => $"\nException thrown: [{model.Name}](#{model.Name}): {model.Text}\n" },
+                    {"returns", (model) => $"Returns: {model.Name}\n"},
+                    {"none", (model) => ""}  };
 
-static var methods = new Dictionary<string, Func<XElement, IEnumerable<string>>>
+static var methods = new Dictionary<string, Func<XElement, IDictionary<string, object>>>
                 {
-                    {"doc", x=> new[]{
-                        x.Element("assembly").Element("name").Value,
-                        x.Element("members").Elements("member").ToMarkDown()
+                    {"doc", x=> new Dictionary<string, object> {
+                        {"Name", x.Element("assembly").Element("name").Value},
+                        {"Text", x.Element("members").Elements("member").ToMarkDown()}
                     }},
-                    {"type", x=>fxNameAndText("name", x)},
+                    {"type", x=> fxNameAndText("name", x)},
                     {"field", x=> fxNameAndText("name", x)},
                     {"property", x=> fxNameAndText("name", x)},
                     //{"method",x=>d("name", x)},
-                    {"method", x=> new[]{
-                        x.Attribute("name").Value,
-                        x.Elements("summary").ToMarkDown(),
-                        "|Name | Description |\n|-----|------|\n",
-                        x.Elements("param").Any() ? x.Elements("param").ToMarkDown() : "",
-                        (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""
+                    {"method", x=> new Dictionary<string, object>{
+                        {"IdParts", new IdParts(x.Attribute("name").Value)},
+                        {"summary", x.Elements("summary").ToMarkDown()},
+                        {"paramHeader", "|Name | Description |\n|-----|------|\n"},
+                        {"parameters", x.Elements("param").Any() ? x.Elements("param").ToMarkDown() : ""},
+                        {"exceptions", (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""}
                     }},
                     {"event", x=>fxNameAndText("name", x)},
-                    {"summary", x=> new[]{ x.Nodes().ToMarkDown() }},
-                    {"remarks", x => new[]{x.Nodes().ToMarkDown()}},
-                    {"example", x => new[]{x.Value.ToCodeBlock()}},
+                    {"summary", x=> new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},
+                    {"remarks", x => new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},
+                    {"example", x => new Dictionary<string, object> {{"Text", x.Value.ToCodeBlock()}}},
                     {"seePage", x=> fxNameAndText("cref", x) },
-                    {"seeAnchor", x=> { var xx = fxNameAndText("cref", x); xx[0] = xx[0].ToLower(); return xx; }},
+                    {"seeAnchor", x=> {
+                        var xx = fxNameAndText("cref", x);
+                        xx["Name"] = xx["Name"].ToString().ToLower(); return new Dictionary<string, object> {{"Text", xx}}; }},
                     {"param", x => fxNameAndText("name", x) },
                     {"exception", x => fxNameAndText("cref", x) },
-                    {"returns", x => new[]{x.Nodes().ToMarkDown()}},
-                    {"none", x => new string[0]}
+                    {"returns", x => new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},
+                    {"none", x => new Dictionary<string, object> {}}
                 };
 
 /// <summary>
@@ -156,8 +170,8 @@ internal static string ToMarkDown(this XNode e)
             var anchor = el.Attribute("cref").Value.StartsWith("!:#");
             name = anchor ? "seeAnchor" : "seePage";
         }
-        var vals = methods[name](el).ToArray();
-        return string.Format(templates[name], vals);
+        var model = methods[name](el);
+        return templates[name](model);
     }
 
     if (e.NodeType == XmlNodeType.Text)
