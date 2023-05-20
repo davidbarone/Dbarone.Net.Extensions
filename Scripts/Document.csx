@@ -41,26 +41,43 @@ static var fxNameAndText = new Func<string, XElement, IDictionary<string, object
                     {"Text", node.Nodes().ToMarkDown()}
 });
 
+static var fxIdAndText = new Func<string, XElement, IDictionary<string, object>>((att, node) => new Dictionary<string, object> {
+                    {"IdParts", new IdParts(node.Attribute(att).Value)},
+                    {"Text", node.Nodes().ToMarkDown()}
+});
+
 static var templates = new Dictionary<string, Func<dynamic, string>>  {
-                    {"doc", (model) => $"# {model.Name}\n{model.Text}"},
-                    {"type", (model) => $"\n\n>## {model.Name}\n\n{model.Text}\n---\n"},
+                    {"doc", (model) =>
+$@"# Assembly: {model.assembly}
+{model.members}"},
+
+                    {"type", (model) =>
+$@"
+>## {model.IdParts.MemberName}: {model.IdParts.Name}
+Namespace: {model.IdParts.Namespace}
+{model.Text}
+---
+"},
                     {"field", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
                     {"property", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
+
                     {"method", (model) =>
-$@"### {model.id}
-Namespace: {model.IdParts.Namespaceb}
+$@"### {model.IdParts.Id}
+Namespace: {model.IdParts.Namespace}
 {model.summary}
+{model.typeparameters}
 {model.paramHeader}
 {model.parameters}
 {model.exceptions}
 ---"},
                     {"event", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
-                    {"summary", (model) => $"{model.Name}\n"},
+                    {"summary", (model) => $"{model.Text}\n"},
                     {"remarks", (model) => $"\n>{model.Name}\n"},
                     {"example", (model) => $"_C# code_\n```c#\n{model.Name}\n```\n"},
                     {"seePage", (model) => $"[[{model.Text}|{model.Name}]]"},
                     {"seeAnchor", (model) => $"[{model.Text}]({model.Name})"},
                     {"param", (model) => $"|{model.Name}: |{model.Text}|\n" },
+                    {"typeparam", (model) => $"|{model.Name}: |{model.Text}|\n" },
                     {"exception", (model) => $"\nException thrown: [{model.Name}](#{model.Name}): {model.Text}\n" },
                     {"returns", (model) => $"Returns: {model.Name}\n"},
                     {"none", (model) => ""}  };
@@ -68,16 +85,17 @@ Namespace: {model.IdParts.Namespaceb}
 static var methods = new Dictionary<string, Func<XElement, IDictionary<string, object>>>
                 {
                     {"doc", x=> new Dictionary<string, object> {
-                        {"Name", x.Element("assembly").Element("name").Value},
-                        {"Text", x.Element("members").Elements("member").ToMarkDown()}
+                        {"assembly", x.Element("assembly").Element("name").Value},
+                        {"members", x.Element("members").Elements("member").ToMarkDown()}
                     }},
-                    {"type", x=> fxNameAndText("name", x)},
+                    {"type", x=> fxIdAndText("name", x)},
                     {"field", x=> fxNameAndText("name", x)},
                     {"property", x=> fxNameAndText("name", x)},
                     //{"method",x=>d("name", x)},
                     {"method", x=> new Dictionary<string, object>{
                         {"IdParts", new IdParts(x.Attribute("name").Value)},
                         {"summary", x.Elements("summary").ToMarkDown()},
+                        {"typeparameters", x.Elements("typeparam").Any() ? x.Elements("typeparam").ToMarkDown() : ""},
                         {"paramHeader", "|Name | Description |\n|-----|------|\n"},
                         {"parameters", x.Elements("param").Any() ? x.Elements("param").ToMarkDown() : ""},
                         {"exceptions", (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""}
@@ -91,6 +109,7 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                         var xx = fxNameAndText("cref", x);
                         xx["Name"] = xx["Name"].ToString().ToLower(); return new Dictionary<string, object> {{"Text", xx}}; }},
                     {"param", x => fxNameAndText("name", x) },
+                    {"typeparam", x => fxNameAndText("name", x) },
                     {"exception", x => fxNameAndText("cref", x) },
                     {"returns", x => new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},
                     {"none", x => new Dictionary<string, object> {}}
@@ -111,6 +130,7 @@ internal class IdParts
     public IdParts(string id)
     {
         this.Id = id;
+        Console.WriteLine(id);
         var splits = id.Split(':');
         switch (splits[0])
         {
@@ -149,6 +169,40 @@ internal class IdAndText
     }
 }
 
+/// <summary>
+/// Converts an IDictionary to a dynamic type.
+/// </summary>
+/// <param name="dict"></param>
+/// <returns></returns>
+internal static dynamic DictionaryToExpando(IDictionary<string, object> dict) {
+    var expando = new ExpandoObject();
+    var expandoDict = (IDictionary<string, object>)expando;
+    foreach (var kvp in dict) {
+        if (kvp.Value is IDictionary<string, object>) {
+            var expandoValue = DictionaryToExpando((IDictionary<string, object>)kvp.Value);
+            expandoDict.Add(kvp.Key, expandoValue);
+        }
+        else if (kvp.Value is System.Collections.ICollection) {
+            // iterate through the collection and convert any string-object dictionaries
+            // along the way into expando objects
+            var itemList = new List<object>();
+            foreach (var item in (System.Collections.ICollection)kvp.Value) {
+                 if (item is IDictionary<string, object>) {
+                    var expandoItem = DictionaryToExpando((IDictionary<string, object>) item);
+                    itemList.Add(expandoItem);
+                }
+                else {
+                    itemList.Add(item);
+                }
+            }
+            expandoDict.Add(kvp.Key, itemList);
+        } else {
+            expandoDict.Add(kvp);
+        }
+    }
+    return expando;
+}
+
 internal static string ToMarkDown(this XNode e)
 {
     string name;
@@ -170,7 +224,8 @@ internal static string ToMarkDown(this XNode e)
             var anchor = el.Attribute("cref").Value.StartsWith("!:#");
             name = anchor ? "seeAnchor" : "seePage";
         }
-        var model = methods[name](el);
+        var model = DictionaryToExpando(methods[name](el));
+        Console.WriteLine($"About to render template for [{name}]...");
         return templates[name](model);
     }
 
