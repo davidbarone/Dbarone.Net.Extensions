@@ -55,21 +55,23 @@ $@"# Assembly: {model.assembly}
 $@"
 >## {model.IdParts.MemberName}: {model.IdParts.Name}
 Namespace: {model.IdParts.Namespace}
+
 {model.Text}
----
 "},
                     {"field", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
                     {"property", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
 
                     {"method", (model) =>
-$@"### {model.IdParts.Id}
-Namespace: {model.IdParts.Namespace}
+$@">### {model.IdParts.Name}
+Namespace: `{model.IdParts.Namespace}`
+
 {model.summary}
+{model.typeparametersHeader}
 {model.typeparameters}
 {model.paramHeader}
 {model.parameters}
 {model.exceptions}
----"},
+"},
                     {"event", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
                     {"summary", (model) => $"{model.Text}\n"},
                     {"remarks", (model) => $"\n>{model.Name}\n"},
@@ -95,8 +97,9 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                     {"method", x=> new Dictionary<string, object>{
                         {"IdParts", new IdParts(x.Attribute("name").Value)},
                         {"summary", x.Elements("summary").ToMarkDown()},
+                        {"typeparametersHeader", x.Elements("typeparam").Any() ? "|Param | Description |\n|-----|-----|" : ""},
                         {"typeparameters", x.Elements("typeparam").Any() ? x.Elements("typeparam").ToMarkDown() : ""},
-                        {"paramHeader", "|Name | Description |\n|-----|------|\n"},
+                        {"paramHeader", x.Elements("param").Any() ? "|Name | Description |\n|-----|------|" : ""},
                         {"parameters", x.Elements("param").Any() ? x.Elements("param").ToMarkDown() : ""},
                         {"exceptions", (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""}
                     }},
@@ -144,9 +147,9 @@ internal class IdParts
             default: this.MemberName = "none"; break;
         }
         this.FullyQualifiedName = splits[1];
-        var fqnParts = id.Split('(');  // look for first '('. Required for Methods and properties with arguments.
+        var fqnParts = this.FullyQualifiedName.Split('(');  // look for first '('. Required for Methods and properties with arguments.
         var nameParts = fqnParts[0].Split('.');
-        this.Name = fqnParts[fqnParts.Length - 1];
+        this.Name = nameParts[nameParts.Length - 1];
         this.Namespace = string.Join('.', nameParts.Take(nameParts.Length - 1));
     }
 }
