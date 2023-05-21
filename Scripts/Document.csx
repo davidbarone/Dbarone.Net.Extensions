@@ -47,23 +47,32 @@ static var fxIdAndText = new Func<string, XElement, IDictionary<string, object>>
 });
 
 static var templates = new Dictionary<string, Func<dynamic, string>>  {
+
+                    // Document / Assembly
                     {"doc", (model) =>
 $@"# Assembly: {model.assembly}
 {model.members}"},
 
+                    // Type
                     {"type", (model) =>
 $@"
+---
 >## {model.IdParts.MemberName}: {model.IdParts.Name}
-Namespace: {model.IdParts.Namespace}
+Namespace: `{model.IdParts.Namespace}`
 
 {model.Text}
 "},
+
+                    // Field
                     {"field", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
+                    
+                    // Property
                     {"property", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
 
+                    // Method
                     {"method", (model) =>
-$@">### {model.IdParts.Name}
-Namespace: `{model.IdParts.Namespace}`
+$@">### {model.IdParts.MemberName}: {model.IdParts.Parent}.{model.IdParts.Name}
+id: `{model.IdParts.Id}`
 
 {model.summary}
 {model.typeparametersHeader}
@@ -128,6 +137,7 @@ internal class IdParts
     public string MemberName { get; set; }
     public string FullyQualifiedName { get; set; }
     public string Namespace { get; set; }
+    public string Parent { get; set; }
     public string Name { get; set; }
 
     public IdParts(string id)
@@ -150,6 +160,10 @@ internal class IdParts
         var fqnParts = this.FullyQualifiedName.Split('(');  // look for first '('. Required for Methods and properties with arguments.
         var nameParts = fqnParts[0].Split('.');
         this.Name = nameParts[nameParts.Length - 1];
+        if ("FPEM".Contains(splits[0])) {
+            this.Parent = nameParts[nameParts.Length - 2];
+            this.Namespace = string.Join('.', nameParts.Take(nameParts.Length - 2));
+        }
         this.Namespace = string.Join('.', nameParts.Take(nameParts.Length - 1));
     }
 }

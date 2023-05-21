@@ -1,12 +1,13 @@
 # Assembly: Dbarone.Net.Extensions
 
+---
 >## type: CollectionExtensions
-Namespace: Dbarone.Net.Extensions
+Namespace: `Dbarone.Net.Extensions`
 
  Extension methods for collections and sequences. 
 
->### Sample``1
-Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
+>### method: CollectionExtensions.Sample``1
+id: `M:Dbarone.Net.Extensions.CollectionExtensions.Sample``1(System.Collections.Generic.IEnumerable{``0},System.Int32)`
 
  Returns a statistically random subset of data. 
 
@@ -20,8 +21,8 @@ Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
 |sampleSize: |The sample size.|
 
 
->### CartesianProduct``1
-Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
+>### method: CollectionExtensions.CartesianProduct``1
+id: `M:Dbarone.Net.Extensions.CollectionExtensions.CartesianProduct``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}})`
 
  Creates a cartesian product of n sequences. The resulting sequence contains all combinations. Each element has n items in the sequence. Taken from: https://ericlippert.com/2010/06/28/computing-a-cartesian-product-with-linq/ 
 
@@ -34,8 +35,8 @@ Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
 |sequences: |The data.|
 
 
->### Splice``1
-Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
+>### method: CollectionExtensions.Splice``1
+id: `M:Dbarone.Net.Extensions.CollectionExtensions.Splice``1(``0[],System.Int64,System.Nullable{System.Int64})`
 
  Splices an array. 
 
@@ -50,8 +51,8 @@ Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
 |number: |The number of elements to remove.|
 
 
->### Union
-Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
+>### method: CollectionExtensions.Union
+id: `M:Dbarone.Net.Extensions.CollectionExtensions.Union(System.Object,System.Object[])`
 
  Creates a collection out of a set of objects. Individual items can themselves be collections or not. 
 
@@ -64,13 +65,14 @@ Namespace: `Dbarone.Net.Extensions.CollectionExtensions`
 
 
 
+---
 >## type: ObjectExtensions
-Namespace: Dbarone.Net.Extensions
+Namespace: `Dbarone.Net.Extensions`
 
  A collection of object extension methods. 
 
->### Extend
-Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
+>### method: ObjectExtensions.Extend
+id: `M:Dbarone.Net.Extensions.ObjectExtensions.Extend(System.Object,System.Object[])`
 
  Merges properties from multiple objects. 
 
@@ -82,8 +84,8 @@ Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
 |obj2: |A variable number of objects to merge into the current object.|
 
 
->### ToObject``1
-Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
+>### method: ObjectExtensions.ToObject``1
+id: `M:Dbarone.Net.Extensions.ObjectExtensions.ToObject``1(System.Collections.Generic.IDictionary{System.String,System.Object})`
 
  Converts a dictionary to a POCO object. 
 
@@ -96,8 +98,8 @@ Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
 |dict: |The dictionary containing the source values.|
 
 
->### ToDictionary
-Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
+>### method: ObjectExtensions.ToDictionary
+id: `M:Dbarone.Net.Extensions.ObjectExtensions.ToDictionary(System.Object,System.Func{System.String,System.String},System.Func{System.String,System.Object,System.Object})`
 
  Converts an object to a dictionary. 
 
@@ -110,8 +112,8 @@ Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
 |valueMapper: |Optional Fun to map values. The Func parameters are key (string) and object (value).|
 
 
->### CompareTo
-Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
+>### method: ObjectExtensions.CompareTo
+id: `M:Dbarone.Net.Extensions.ObjectExtensions.CompareTo(System.Object,System.Object)`
 
  Compares the current object to another object. 
 
@@ -123,8 +125,8 @@ Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
 |obj2: |The second object to compare.|
 
 
->### ValueEquals
-Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
+>### method: ObjectExtensions.ValueEquals
+id: `M:Dbarone.Net.Extensions.ObjectExtensions.ValueEquals(System.Object,System.Object)`
 
  Compares 2 objects and returns true if they are equivalent in value. Reference types are compared by doing a ValueEquals on all public properties and fields recursively, and collections are compared by element. For collections, order is important. 
 
@@ -137,13 +139,14 @@ Namespace: `Dbarone.Net.Extensions.ObjectExtensions`
 
 
 
+---
 >## type: ReflectionExtensions
-Namespace: Dbarone.Net.Extensions
+Namespace: `Dbarone.Net.Extensions`
 
  A collection of .NET reflection extension methods. 
 
->### GetPropertiesDecoratedBy``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetPropertiesDecoratedBy``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetPropertiesDecoratedBy``1(System.Object,System.Boolean,System.Reflection.BindingFlags)`
 
  Returns a collection of properties on an object decorated by the specified attribute type. 
 
@@ -158,8 +161,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |bindingFlags: |When overridden in a derived class, searches for the properties defined for the current System.Type , using the specified binding constraints.|
 
 
->### GetPropertiesDecoratedBy``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetPropertiesDecoratedBy``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetPropertiesDecoratedBy``1(System.Type,System.Boolean,System.Reflection.BindingFlags)`
 
  Returns a collection of properties for a given type decorated by the specified attribute type. 
 
@@ -174,8 +177,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |bindingFlags: |When overridden in a derived class, searches for the properties defined for the current System.Type , using the specified binding constraints.|
 
 
->### GetMembersDecoratedBy``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetMembersDecoratedBy``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMembersDecoratedBy``1(System.Object,System.Boolean,System.Reflection.BindingFlags)`
 
  Returns a collection of members on an object decorated by the specified attribute type. 
 
@@ -190,8 +193,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |bindingFlags: |When overridden in a derived class, searches for the members defined for the current System.Type , using the specified binding constraints.|
 
 
->### GetMembersDecoratedBy``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetMembersDecoratedBy``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMembersDecoratedBy``1(System.Type,System.Boolean,System.Reflection.BindingFlags)`
 
  Returns a collection of members for a given type decorated by the specified attribute type. 
 
@@ -206,8 +209,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |bindingFlags: |When overridden in a derived class, searches for the members defined for the current System.Type , using the specified binding constraints.|
 
 
->### GetMethodsDecoratedBy``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetMethodsDecoratedBy``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMethodsDecoratedBy``1(System.Object,System.Boolean,System.Reflection.BindingFlags)`
 
  Returns a collection of methods on an object decorated by the specified attribute type. 
 
@@ -222,8 +225,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |bindingFlags: |When overridden in a derived class, searches for the methods defined for the current System.Type , using the specified binding constraints.|
 
 
->### GetMethodsDecoratedBy``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetMethodsDecoratedBy``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMethodsDecoratedBy``1(System.Type,System.Boolean,System.Reflection.BindingFlags)`
 
  Returns a collection of methods for a given type decorated by the specified attribute type. 
 
@@ -238,8 +241,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |bindingFlags: |When overridden in a derived class, searches for the methods defined for the current System.Type , using the specified binding constraints.|
 
 
->### Value
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.Value
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Value(System.Object,System.String)`
 
  Gets the value of a object's property using reflection. 
 
@@ -251,8 +254,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |propertyName: |The name of the property|
 
 
->### GetTypesAssignableFrom
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetTypesAssignableFrom
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetTypesAssignableFrom(System.AppDomain,System.Type)`
 
  Returns a collection of types in an app domain that a specified base type is assignable from. 
 
@@ -264,8 +267,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |baseType: |The base type.|
 
 
->### GetSubclassTypesOf``1
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetSubclassTypesOf``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetSubclassTypesOf``1(System.AppDomain)`
 
  Returns a collection of types in an AppDomain that are a subclass of a specified base type. 
 
@@ -278,8 +281,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |domain: |The AppDomain to search for types.|
 
 
->### IsIndexerProperty
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.IsIndexerProperty
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsIndexerProperty(System.Reflection.PropertyInfo)`
 
  Returns true if a PropertyInfo object is an indexer property. 
 
@@ -290,8 +293,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |prop: |The property to check.|
 
 
->### IsNumeric
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.IsNumeric
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsNumeric(System.Type)`
 
  Returns true if the .NET type is a numeric type. 
 
@@ -302,8 +305,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |type: |The type to check.|
 
 
->### Default
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.Default
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Default(System.Type)`
 
  Returns the default value for a type. For value types, returns default value. For reference types, returns null. 
 
@@ -314,8 +317,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |type: |The type.|
 
 
->### GetNullableType
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetNullableType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetNullableType(System.Type)`
 
  Gets the nullable type from a non-nullable type. 
 
@@ -326,8 +329,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |type: |The non-nullable type. Can be value or reference type. Reference types are assumed to be nullable already.|
 
 
->### GetNullableUnderlyingType
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.GetNullableUnderlyingType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetNullableUnderlyingType(System.Type)`
 
  Gets the underlying type for a nullable type. 
 
@@ -338,8 +341,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |type: |The nullable type.|
 
 
->### IsNullable
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.IsNullable
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsNullable(System.Type)`
 
  Returns whether a type is a nullable type. 
 
@@ -350,8 +353,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |t: ||
 
 
->### Parse
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.Parse
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Parse(System.Type,System.String)`
 
  Parses a string to another type. The type must support the Parse method. 
 
@@ -363,8 +366,8 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 |type: |The type of value to parse the string into.|
 
 
->### ParseNullable
-Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
+>### method: ReflectionExtensions.ParseNullable
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.ParseNullable(System.Type,System.String)`
 
  Parses a string to another type. The type must support the Parse method. Null or empty strings are 
 
@@ -377,8 +380,9 @@ Namespace: `Dbarone.Net.Extensions.ReflectionExtensions`
 
 
 
+---
 >## type: Justification
-Namespace: Dbarone.Net.Extensions
+Namespace: `Dbarone.Net.Extensions`
 
  The justification type. 
 
@@ -395,13 +399,14 @@ Namespace: Dbarone.Net.Extensions
 
 ---
 
+---
 >## type: StringExtensions
-Namespace: Dbarone.Net.Extensions
+Namespace: `Dbarone.Net.Extensions`
 
  A collection of string extension methods. 
 
->### ToGuid
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.ToGuid
+id: `M:Dbarone.Net.Extensions.StringExtensions.ToGuid(System.String)`
 
  Allows a short (TimeLow) guid or full guid to be converted to Guid 
 
@@ -412,8 +417,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |str: |The input string value.|
 
 
->### Justify
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.Justify
+id: `M:Dbarone.Net.Extensions.StringExtensions.Justify(System.String,System.Int32,Dbarone.Net.Extensions.Justification)`
 
  Justifies text. 
 
@@ -426,8 +431,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |justification: |The justification style.|
 
 
->### ParseArgs
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.ParseArgs
+id: `M:Dbarone.Net.Extensions.StringExtensions.ParseArgs(System.String)`
 
  Parses a string for arguments. Arguments can be separated by whitespace. Single or double quotes can be used to delimit fields that contain space characters. 
 
@@ -438,8 +443,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |str: |The input string to parse.|
 
 
->### IsNullOrWhiteSpace
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.IsNullOrWhiteSpace
+id: `M:Dbarone.Net.Extensions.StringExtensions.IsNullOrWhiteSpace(System.String)`
 
  Wrapper for .NET IsNullOrWhiteSpace method. 
 
@@ -450,8 +455,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |str: |Input value to test.|
 
 
->### IsNullOrEmpty
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.IsNullOrEmpty
+id: `M:Dbarone.Net.Extensions.StringExtensions.IsNullOrEmpty(System.String)`
 
  Wrapper for .NET IsNullOrEmpty method. 
 
@@ -462,8 +467,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |str: |input value to test.|
 
 
->### RemoveRight
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.RemoveRight
+id: `M:Dbarone.Net.Extensions.StringExtensions.RemoveRight(System.String,System.Int32)`
 
  Removes characters from the right end of a string 
 
@@ -475,8 +480,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |length: |The required length of the string.|
 
 
->### RemoveLeft
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.RemoveLeft
+id: `M:Dbarone.Net.Extensions.StringExtensions.RemoveLeft(System.String,System.Int32)`
 
  Removes characters from the left end of a string 
 
@@ -488,8 +493,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |length: |The required length of the string.|
 
 
->### ToStream
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.ToStream
+id: `M:Dbarone.Net.Extensions.StringExtensions.ToStream(System.String)`
 
  Converts a string value to a stream. 
 
@@ -500,8 +505,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |str: |The input string.|
 
 
->### WordWrap
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.WordWrap
+id: `M:Dbarone.Net.Extensions.StringExtensions.WordWrap(System.String,System.Int32)`
 
  Splits a string into chunks of [length] characters. Word breaks are avoided. 
 
@@ -513,8 +518,8 @@ Namespace: `Dbarone.Net.Extensions.StringExtensions`
 |length: ||
 
 
->### ToSnakeCase
-Namespace: `Dbarone.Net.Extensions.StringExtensions`
+>### method: StringExtensions.ToSnakeCase
+id: `M:Dbarone.Net.Extensions.StringExtensions.ToSnakeCase(System.String)`
 
  Converts a string to snake case. 
 
