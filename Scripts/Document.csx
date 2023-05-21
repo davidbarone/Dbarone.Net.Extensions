@@ -51,13 +51,16 @@ static var templates = new Dictionary<string, Func<dynamic, string>>  {
                     // Document / Assembly
                     {"doc", (model) =>
 $@"# Assembly: {model.assembly}
+##Contents
+{model.toc}
+
 {model.members}"},
 
                     // Type
                     {"type", (model) =>
 $@"
 ---
->## {model.IdParts.MemberName}: {model.IdParts.Name}
+## {model.IdParts.FullyQualifiedName}
 Namespace: `{model.IdParts.Namespace}`
 
 {model.Text}
@@ -71,7 +74,7 @@ Namespace: `{model.IdParts.Namespace}`
 
                     // Method
                     {"method", (model) =>
-$@">### {model.IdParts.MemberName}: {model.IdParts.Parent}.{model.IdParts.Name}
+$@"### {model.IdParts.MemberName}: {model.IdParts.Parent}.{model.IdParts.Name}
 id: `{model.IdParts.Id}`
 
 {model.summary}
@@ -97,7 +100,12 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                 {
                     {"doc", x=> new Dictionary<string, object> {
                         {"assembly", x.Element("assembly").Element("name").Value},
-                        {"members", x.Element("members").Elements("member").ToMarkDown()}
+                        {"members", x.Element("members").Elements("member").ToMarkDown()},
+                        {"toc", x.Element("members").Elements("member")
+                        .Select(toc => new IdParts(toc.Attribute("name").Value))
+                        .Where(toc => toc.MemberName == "type")
+                        .Select(toc => $"- [{toc.FullyQualifiedName}](#toc.FullyQualifiedName)\n")
+                        .Aggregate("", (current, next) => current + "" + next)}
                     }},
                     {"type", x=> fxIdAndText("name", x)},
                     {"field", x=> fxNameAndText("name", x)},
@@ -160,7 +168,8 @@ internal class IdParts
         var fqnParts = this.FullyQualifiedName.Split('(');  // look for first '('. Required for Methods and properties with arguments.
         var nameParts = fqnParts[0].Split('.');
         this.Name = nameParts[nameParts.Length - 1];
-        if ("FPEM".Contains(splits[0])) {
+        if ("FPEM".Contains(splits[0]))
+        {
             this.Parent = nameParts[nameParts.Length - 2];
             this.Namespace = string.Join('.', nameParts.Take(nameParts.Length - 2));
         }
@@ -191,29 +200,38 @@ internal class IdAndText
 /// </summary>
 /// <param name="dict"></param>
 /// <returns></returns>
-internal static dynamic DictionaryToExpando(IDictionary<string, object> dict) {
+internal static dynamic DictionaryToExpando(IDictionary<string, object> dict)
+{
     var expando = new ExpandoObject();
     var expandoDict = (IDictionary<string, object>)expando;
-    foreach (var kvp in dict) {
-        if (kvp.Value is IDictionary<string, object>) {
+    foreach (var kvp in dict)
+    {
+        if (kvp.Value is IDictionary<string, object>)
+        {
             var expandoValue = DictionaryToExpando((IDictionary<string, object>)kvp.Value);
             expandoDict.Add(kvp.Key, expandoValue);
         }
-        else if (kvp.Value is System.Collections.ICollection) {
+        else if (kvp.Value is System.Collections.ICollection)
+        {
             // iterate through the collection and convert any string-object dictionaries
             // along the way into expando objects
             var itemList = new List<object>();
-            foreach (var item in (System.Collections.ICollection)kvp.Value) {
-                 if (item is IDictionary<string, object>) {
-                    var expandoItem = DictionaryToExpando((IDictionary<string, object>) item);
+            foreach (var item in (System.Collections.ICollection)kvp.Value)
+            {
+                if (item is IDictionary<string, object>)
+                {
+                    var expandoItem = DictionaryToExpando((IDictionary<string, object>)item);
                     itemList.Add(expandoItem);
                 }
-                else {
+                else
+                {
                     itemList.Add(item);
                 }
             }
             expandoDict.Add(kvp.Key, itemList);
-        } else {
+        }
+        else
+        {
             expandoDict.Add(kvp);
         }
     }
