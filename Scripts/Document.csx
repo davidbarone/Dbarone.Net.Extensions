@@ -51,7 +51,7 @@ static var templates = new Dictionary<string, Func<dynamic, string>>  {
                     // Document / Assembly
                     {"doc", (model) =>
 $@"# Assembly: {model.assembly}
-##Contents
+## Contents
 {model.toc}
 
 {model.members}"},
@@ -104,7 +104,7 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                         {"toc", x.Element("members").Elements("member")
                         .Select(toc => new IdParts(toc.Attribute("name").Value))
                         .Where(toc => toc.MemberName == "type")
-                        .Select(toc => $"- [{toc.FullyQualifiedName}](#toc.FullyQualifiedName)\n")
+                        .Select(toc => $"- [{toc.FullyQualifiedName}](#{toc.FullyQualifiedName})\n")
                         .Aggregate("", (current, next) => current + "" + next)}
                     }},
                     {"type", x=> fxIdAndText("name", x)},
