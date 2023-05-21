@@ -104,7 +104,7 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                         {"toc", x.Element("members").Elements("member")
                         .Select(toc => new IdParts(toc.Attribute("name").Value))
                         .Where(toc => toc.MemberName == "type")
-                        .Select(toc => $"- [{toc.FullyQualifiedName}](##{toc.FullyQualifiedName})\n")
+                        .Select(toc => $"- [{toc.FullyQualifiedName}](#{toc.FullyQualifiedNameLink})\n")
                         .Aggregate("", (current, next) => current + "" + next)}
                     }},
                     {"type", x=> fxIdAndText("name", x)},
@@ -144,6 +144,7 @@ internal class IdParts
     public string Id { get; set; }
     public string MemberName { get; set; }
     public string FullyQualifiedName { get; set; }
+    public string FullyQualifiedNameLink { get; set; }
     public string Namespace { get; set; }
     public string Parent { get; set; }
     public string Name { get; set; }
@@ -165,6 +166,7 @@ internal class IdParts
             default: this.MemberName = "none"; break;
         }
         this.FullyQualifiedName = splits[1];
+        this.FullyQualifiedNameLink = this.FullyQualifiedName.Replace(".", "").ToLower();
         var fqnParts = this.FullyQualifiedName.Split('(');  // look for first '('. Required for Methods and properties with arguments.
         var nameParts = fqnParts[0].Split('.');
         this.Name = nameParts[nameParts.Length - 1];

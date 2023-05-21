@@ -1,10 +1,10 @@
 # Assembly: Dbarone.Net.Extensions
 ## Contents
-- [Dbarone.Net.Extensions.CollectionExtensions](##Dbarone.Net.Extensions.CollectionExtensions)
-- [Dbarone.Net.Extensions.ObjectExtensions](##Dbarone.Net.Extensions.ObjectExtensions)
-- [Dbarone.Net.Extensions.ReflectionExtensions](##Dbarone.Net.Extensions.ReflectionExtensions)
-- [Dbarone.Net.Extensions.Justification](##Dbarone.Net.Extensions.Justification)
-- [Dbarone.Net.Extensions.StringExtensions](##Dbarone.Net.Extensions.StringExtensions)
+- [Dbarone.Net.Extensions.CollectionExtensions](#dbaronenetextensionscollectionextensions)
+- [Dbarone.Net.Extensions.ObjectExtensions](#dbaronenetextensionsobjectextensions)
+- [Dbarone.Net.Extensions.ReflectionExtensions](#dbaronenetextensionsreflectionextensions)
+- [Dbarone.Net.Extensions.Justification](#dbaronenetextensionsjustification)
+- [Dbarone.Net.Extensions.StringExtensions](#dbaronenetextensionsstringextensions)
 
 
 
