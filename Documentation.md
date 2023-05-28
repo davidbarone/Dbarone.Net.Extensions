@@ -33,18 +33,13 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.Sample``1(System.Collections.
 #### Examples:
 
 
-This shows how to increment an integer.
+Taking a random sample of data.
 ``` c#
-    var index = 5;
-    index++;
-    
-```
-
-
-Another example.
-``` c#
-    var index = 6;
-    index++;
+    public IEnumerable GetSample(IEnumerable data, int sampleSize) {
+        
+        // returns a sample of data:
+        return data.Sample(sampleSize);
+    }
     
 ```
 

@@ -12,17 +12,13 @@ public static class CollectionExtensions
     /// <param name="data">The data to provide a sample from.</param>
     /// <param name="sampleSize">The sample size.</param>
     /// <example>
-    /// This shows how to increment an integer.
+    /// Taking a random sample of data.
     /// <code>
-    /// var index = 5;
-    /// index++;
-    /// </code>
-    /// </example>
-    /// <example>
-    /// Another example.
-    /// <code>
-    /// var index = 6;
-    /// index++;
+    /// public IEnumerable GetSample(IEnumerable data, int sampleSize) {
+    ///     
+    ///     // returns a sample of data:
+    ///     return data.Sample(sampleSize);
+    /// }
     /// </code>
     /// </example>
     /// <returns>A random sample of the data.</returns>
