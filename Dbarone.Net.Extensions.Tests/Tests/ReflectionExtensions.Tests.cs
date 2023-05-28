@@ -61,4 +61,14 @@ public class ReflectionExtensionsTests
     {
         Assert.Equal(expected, type.ParseNullable(input));
     }
+
+
+    [Theory]
+    [InlineData((int)123, typeof(long), true)]
+    [InlineData("a string value", typeof(int), false)]
+    [InlineData((long)long.MaxValue, typeof(int), false)]
+    public void TestCanConvertTo(object obj, Type type, bool expected) {
+
+        Assert.Equal(expected, obj.CanConvertTo(type));
+    }
 }

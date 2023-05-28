@@ -306,4 +306,43 @@ public static class ReflectionExtensions
             return type.Parse(str);
         }
     }
+
+    /// <summary>
+    /// Determines whether an object can be converted to a specific type.
+    /// Wrapper function for the the System.Convert class.
+    /// </summary>
+    /// <param name="obj">The object to be converted.</param>
+    /// <param name="conversionType">The target type the object is to be converted to.</param>
+    /// <returns>Returns true if the object can be converted to the specified type.</returns>
+    public static bool CanConvertTo(this object obj, Type conversionType)
+    {
+        try
+        {
+            System.Convert.ChangeType(obj, conversionType);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Attempts to convert an object to a specific type.
+    /// Returns null if the object cannot be converted to the conversion Type.
+    /// </summary>
+    /// <param name="obj">The object to be converted.</param>
+    /// <param name="conversionType">The target type the object is to be converted to.</param>
+    /// <returns>Returns the object cast as conversionType.</returns>
+    public static object? ConvertTo(this object obj, Type conversionType)
+    {
+        try
+        {
+            return System.Convert.ChangeType(obj, conversionType);
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }
