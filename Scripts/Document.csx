@@ -83,11 +83,12 @@ id: `{model.IdParts.Id}`
 {model.paramHeader}
 {model.parameters}
 {model.exceptions}
+{model.examples}
 "},
                     {"event", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
                     {"summary", (model) => $"{model.Text}\n"},
                     {"remarks", (model) => $"\n>{model.Name}\n"},
-                    {"example", (model) => $"_C# code_\n```c#\n{model.Name}\n```\n"},
+                    {"example", (model) => $"_C# code_\n```c#\n{model.Text}\n```\n"},
                     {"seePage", (model) => $"[[{model.Text}|{model.Name}]]"},
                     {"seeAnchor", (model) => $"[{model.Text}]({model.Name})"},
                     {"param", (model) => $"|{model.Name}: |{model.Text}|\n" },
@@ -118,7 +119,9 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                         {"typeparameters", x.Elements("typeparam").Any() ? x.Elements("typeparam").ToMarkDown() : ""},
                         {"paramHeader", x.Elements("param").Any() ? "|Name | Description |\n|-----|------|" : ""},
                         {"parameters", x.Elements("param").Any() ? x.Elements("param").ToMarkDown() : ""},
-                        {"exceptions", (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""}
+                        {"exceptions", (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""},
+                        {"examples", x.Elements("example").ToMarkDown()},
+ 
                     }},
                     {"event", x=>fxNameAndText("name", x)},
                     {"summary", x=> new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},

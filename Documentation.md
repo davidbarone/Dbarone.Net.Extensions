@@ -29,6 +29,15 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.Sample``1(System.Collections.
 |sampleSize: |The sample size.|
 
 
+_C# code_
+```c#
+    This shows how to increment an integer.
+    
+    var index = 5;
+    index++;
+    
+```
+
 ### method: CollectionExtensions.CartesianProduct``1
 id: `M:Dbarone.Net.Extensions.CollectionExtensions.CartesianProduct``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}})`
 
@@ -41,6 +50,7 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.CartesianProduct``1(System.Co
 |Name | Description |
 |-----|------|
 |sequences: |The data.|
+
 
 
 ### method: CollectionExtensions.Splice``1
@@ -59,6 +69,7 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.Splice``1(``0[],System.Int64,
 |number: |The number of elements to remove.|
 
 
+
 ### method: CollectionExtensions.Union
 id: `M:Dbarone.Net.Extensions.CollectionExtensions.Union(System.Object,System.Object[])`
 
@@ -70,6 +81,7 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.Union(System.Object,System.Ob
 |-----|------|
 |obj1: |The current object.|
 |obj2: |A set of additional objects.|
+
 
 
 
@@ -92,6 +104,7 @@ id: `M:Dbarone.Net.Extensions.ObjectExtensions.Extend(System.Object,System.Objec
 |obj2: |A variable number of objects to merge into the current object.|
 
 
+
 ### method: ObjectExtensions.ToObject``1
 id: `M:Dbarone.Net.Extensions.ObjectExtensions.ToObject``1(System.Collections.Generic.IDictionary{System.String,System.Object})`
 
@@ -104,6 +117,7 @@ id: `M:Dbarone.Net.Extensions.ObjectExtensions.ToObject``1(System.Collections.Ge
 |Name | Description |
 |-----|------|
 |dict: |The dictionary containing the source values.|
+
 
 
 ### method: ObjectExtensions.ToDictionary
@@ -120,6 +134,7 @@ id: `M:Dbarone.Net.Extensions.ObjectExtensions.ToDictionary(System.Object,System
 |valueMapper: |Optional Fun to map values. The Func parameters are key (string) and object (value).|
 
 
+
 ### method: ObjectExtensions.CompareTo
 id: `M:Dbarone.Net.Extensions.ObjectExtensions.CompareTo(System.Object,System.Object)`
 
@@ -133,6 +148,7 @@ id: `M:Dbarone.Net.Extensions.ObjectExtensions.CompareTo(System.Object,System.Ob
 |obj2: |The second object to compare.|
 
 
+
 ### method: ObjectExtensions.ValueEquals
 id: `M:Dbarone.Net.Extensions.ObjectExtensions.ValueEquals(System.Object,System.Object)`
 
@@ -144,6 +160,7 @@ id: `M:Dbarone.Net.Extensions.ObjectExtensions.ValueEquals(System.Object,System.
 |-----|------|
 |obj1: |First object to compare.|
 |obj2: |Second object to compare.|
+
 
 
 
@@ -169,6 +186,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetPropertiesDecoratedBy``1(S
 |bindingFlags: |When overridden in a derived class, searches for the properties defined for the current System.Type , using the specified binding constraints.|
 
 
+
 ### method: ReflectionExtensions.GetPropertiesDecoratedBy``1
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetPropertiesDecoratedBy``1(System.Type,System.Boolean,System.Reflection.BindingFlags)`
 
@@ -183,6 +201,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetPropertiesDecoratedBy``1(S
 |t: |The type to check.|
 |inherit: |If true, specifies to also search the ancestors of element for custom attributes.|
 |bindingFlags: |When overridden in a derived class, searches for the properties defined for the current System.Type , using the specified binding constraints.|
+
 
 
 ### method: ReflectionExtensions.GetMembersDecoratedBy``1
@@ -201,6 +220,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMembersDecoratedBy``1(Syst
 |bindingFlags: |When overridden in a derived class, searches for the members defined for the current System.Type , using the specified binding constraints.|
 
 
+
 ### method: ReflectionExtensions.GetMembersDecoratedBy``1
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMembersDecoratedBy``1(System.Type,System.Boolean,System.Reflection.BindingFlags)`
 
@@ -215,6 +235,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMembersDecoratedBy``1(Syst
 |t: |The type to check.|
 |inherit: |If true, specifies to also search the ancestors of element for custom attributes.|
 |bindingFlags: |When overridden in a derived class, searches for the members defined for the current System.Type , using the specified binding constraints.|
+
 
 
 ### method: ReflectionExtensions.GetMethodsDecoratedBy``1
@@ -233,6 +254,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMethodsDecoratedBy``1(Syst
 |bindingFlags: |When overridden in a derived class, searches for the methods defined for the current System.Type , using the specified binding constraints.|
 
 
+
 ### method: ReflectionExtensions.GetMethodsDecoratedBy``1
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMethodsDecoratedBy``1(System.Type,System.Boolean,System.Reflection.BindingFlags)`
 
@@ -249,6 +271,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetMethodsDecoratedBy``1(Syst
 |bindingFlags: |When overridden in a derived class, searches for the methods defined for the current System.Type , using the specified binding constraints.|
 
 
+
 ### method: ReflectionExtensions.Value
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Value(System.Object,System.String)`
 
@@ -262,6 +285,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Value(System.Object,System.St
 |propertyName: |The name of the property|
 
 
+
 ### method: ReflectionExtensions.GetTypesAssignableFrom
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetTypesAssignableFrom(System.AppDomain,System.Type)`
 
@@ -273,6 +297,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetTypesAssignableFrom(System
 |-----|------|
 |domain: |The AppDomain to search for types.|
 |baseType: |The base type.|
+
 
 
 ### method: ReflectionExtensions.GetSubclassTypesOf``1
@@ -289,6 +314,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetSubclassTypesOf``1(System.
 |domain: |The AppDomain to search for types.|
 
 
+
 ### method: ReflectionExtensions.IsIndexerProperty
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsIndexerProperty(System.Reflection.PropertyInfo)`
 
@@ -299,6 +325,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsIndexerProperty(System.Refl
 |Name | Description |
 |-----|------|
 |prop: |The property to check.|
+
 
 
 ### method: ReflectionExtensions.IsNumeric
@@ -313,6 +340,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsNumeric(System.Type)`
 |type: |The type to check.|
 
 
+
 ### method: ReflectionExtensions.Default
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Default(System.Type)`
 
@@ -323,6 +351,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Default(System.Type)`
 |Name | Description |
 |-----|------|
 |type: |The type.|
+
 
 
 ### method: ReflectionExtensions.GetNullableType
@@ -337,6 +366,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetNullableType(System.Type)`
 |type: |The non-nullable type. Can be value or reference type. Reference types are assumed to be nullable already.|
 
 
+
 ### method: ReflectionExtensions.GetNullableUnderlyingType
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetNullableUnderlyingType(System.Type)`
 
@@ -349,6 +379,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetNullableUnderlyingType(Sys
 |type: |The nullable type.|
 
 
+
 ### method: ReflectionExtensions.IsNullable
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsNullable(System.Type)`
 
@@ -359,6 +390,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsNullable(System.Type)`
 |Name | Description |
 |-----|------|
 |t: ||
+
 
 
 ### method: ReflectionExtensions.Parse
@@ -374,6 +406,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Parse(System.Type,System.Stri
 |type: |The type of value to parse the string into.|
 
 
+
 ### method: ReflectionExtensions.ParseNullable
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.ParseNullable(System.Type,System.String)`
 
@@ -385,6 +418,7 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.ParseNullable(System.Type,Sys
 |-----|------|
 |type: |The type convert the string value into. Must support a nullable version of the type.|
 |str: |The string to parse.|
+
 
 
 
@@ -425,6 +459,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.ToGuid(System.String)`
 |str: |The input string value.|
 
 
+
 ### method: StringExtensions.Justify
 id: `M:Dbarone.Net.Extensions.StringExtensions.Justify(System.String,System.Int32,Dbarone.Net.Extensions.Justification)`
 
@@ -439,6 +474,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.Justify(System.String,System.Int3
 |justification: |The justification style.|
 
 
+
 ### method: StringExtensions.ParseArgs
 id: `M:Dbarone.Net.Extensions.StringExtensions.ParseArgs(System.String)`
 
@@ -449,6 +485,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.ParseArgs(System.String)`
 |Name | Description |
 |-----|------|
 |str: |The input string to parse.|
+
 
 
 ### method: StringExtensions.IsNullOrWhiteSpace
@@ -463,6 +500,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.IsNullOrWhiteSpace(System.String)
 |str: |Input value to test.|
 
 
+
 ### method: StringExtensions.IsNullOrEmpty
 id: `M:Dbarone.Net.Extensions.StringExtensions.IsNullOrEmpty(System.String)`
 
@@ -473,6 +511,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.IsNullOrEmpty(System.String)`
 |Name | Description |
 |-----|------|
 |str: |input value to test.|
+
 
 
 ### method: StringExtensions.RemoveRight
@@ -488,6 +527,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.RemoveRight(System.String,System.
 |length: |The required length of the string.|
 
 
+
 ### method: StringExtensions.RemoveLeft
 id: `M:Dbarone.Net.Extensions.StringExtensions.RemoveLeft(System.String,System.Int32)`
 
@@ -501,6 +541,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.RemoveLeft(System.String,System.I
 |length: |The required length of the string.|
 
 
+
 ### method: StringExtensions.ToStream
 id: `M:Dbarone.Net.Extensions.StringExtensions.ToStream(System.String)`
 
@@ -511,6 +552,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.ToStream(System.String)`
 |Name | Description |
 |-----|------|
 |str: |The input string.|
+
 
 
 ### method: StringExtensions.WordWrap
@@ -526,6 +568,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.WordWrap(System.String,System.Int
 |length: ||
 
 
+
 ### method: StringExtensions.ToSnakeCase
 id: `M:Dbarone.Net.Extensions.StringExtensions.ToSnakeCase(System.String)`
 
@@ -536,5 +579,6 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.ToSnakeCase(System.String)`
 |Name | Description |
 |-----|------|
 |str: |The input string value.|
+
 
 

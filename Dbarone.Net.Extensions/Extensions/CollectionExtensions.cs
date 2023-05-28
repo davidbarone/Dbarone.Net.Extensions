@@ -11,6 +11,13 @@ public static class CollectionExtensions
     /// <typeparam name="T">The type of the data element.</typeparam>
     /// <param name="data">The data to provide a sample from.</param>
     /// <param name="sampleSize">The sample size.</param>
+    /// <example>
+    /// This shows how to increment an integer.
+    /// <code>
+    /// var index = 5;
+    /// index++;
+    /// </code>
+    /// </example>
     /// <returns>A random sample of the data.</returns>
     public static IEnumerable<T> Sample<T>(this IEnumerable<T> data, int sampleSize)
     {
