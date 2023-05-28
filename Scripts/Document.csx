@@ -88,7 +88,7 @@ id: `{model.IdParts.Id}`
                     {"event", (model) => $"### {model.Name}\n{model.Text}\n---\n"},
                     {"summary", (model) => $"{model.Text}\n"},
                     {"remarks", (model) => $"\n>{model.Name}\n"},
-                    {"example", (model) => $"_C# code_\n```c#\n{model.Text}\n```\n"},
+                    {"example", (model) => $"\n{model.Text}\n"},
                     {"seePage", (model) => $"[[{model.Text}|{model.Name}]]"},
                     {"seeAnchor", (model) => $"[{model.Text}]({model.Name})"},
                     {"param", (model) => $"|{model.Name}: |{model.Text}|\n" },
@@ -120,13 +120,12 @@ static var methods = new Dictionary<string, Func<XElement, IDictionary<string, o
                         {"paramHeader", x.Elements("param").Any() ? "|Name | Description |\n|-----|------|" : ""},
                         {"parameters", x.Elements("param").Any() ? x.Elements("param").ToMarkDown() : ""},
                         {"exceptions", (x.Element("exception") != null) ? x.Element("exception").ToMarkDown() : ""},
-                        {"examples", x.Elements("example").ToMarkDown()},
- 
+                        {"examples", x.Elements("example").Any() ? $"\n#### Examples:\n{x.Elements("example").ToMarkDown()}\n" : ""},
                     }},
                     {"event", x=>fxNameAndText("name", x)},
                     {"summary", x=> new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},
                     {"remarks", x => new Dictionary<string, object> {{"Text", x.Nodes().ToMarkDown()}}},
-                    {"example", x => new Dictionary<string, object> {{"Text", x.Value.ToCodeBlock()}}},
+                    {"example", x => new Dictionary<string, object> {{"Text", x.ToCodeBlock()}}},
                     {"seePage", x=> fxNameAndText("cref", x) },
                     {"seeAnchor", x=> {
                         var xx = fxNameAndText("cref", x);
@@ -287,9 +286,24 @@ internal static string ToMarkDown(this IEnumerable<XNode> es)
     }
 }
 
-static string ToCodeBlock(this string s)
+static string ToCodeBlock(this XElement el)
 {
-    var lines = s.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-    var blank = lines[0].TakeWhile(x => x == ' ').Count() - 4;
-    return string.Join("\n", lines.Select(x => new string(x.SkipWhile((y, i) => i < blank).ToArray())));
+    string s = "";
+    foreach (var childNode in el.Nodes())
+    {
+        if (childNode.NodeType == XmlNodeType.Text)
+        {
+            s = s + $"\n{childNode.ToString().Trim()}\n";
+        }
+        else if (childNode.NodeType == XmlNodeType.Element && ((XElement)childNode).Name == "code")
+        {
+            var code = (childNode as XElement).Value;
+            var lines = code.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var blank = lines[0].TakeWhile(x => x == ' ').Count() - 4;
+            code = string.Join("\n", lines.Select(x => new string(x.SkipWhile((y, i) => i < blank).ToArray())));
+            code = $"``` c#\n{code}\n```";
+            s = s + code;
+        }
+    }
+    return s;
 }

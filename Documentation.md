@@ -29,14 +29,25 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.Sample``1(System.Collections.
 |sampleSize: |The sample size.|
 
 
-_C# code_
-```c#
-    This shows how to increment an integer.
-    
+
+#### Examples:
+
+
+This shows how to increment an integer.
+``` c#
     var index = 5;
     index++;
     
 ```
+
+
+Another example.
+``` c#
+    var index = 6;
+    index++;
+    
+```
+
 
 ### method: CollectionExtensions.CartesianProduct``1
 id: `M:Dbarone.Net.Extensions.CollectionExtensions.CartesianProduct``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}})`
@@ -418,6 +429,34 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.ParseNullable(System.Type,Sys
 |-----|------|
 |type: |The type convert the string value into. Must support a nullable version of the type.|
 |str: |The string to parse.|
+
+
+
+### method: ReflectionExtensions.CanConvertTo
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.CanConvertTo(System.Object,System.Type)`
+
+ Determines whether an object can be converted to a specific type. Wrapper function for the the System.Convert class. For details of conversion rules, see: https://learn.microsoft.com/en-us/dotnet/api/system.convert?view=net-7.0 
+
+
+
+|Name | Description |
+|-----|------|
+|obj: |The object to be converted.|
+|conversionType: |The target type the object is to be converted to.|
+
+
+
+### method: ReflectionExtensions.ConvertTo
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.ConvertTo(System.Object,System.Type)`
+
+ Attempts to convert an object to a specific type. Returns null if the object cannot be converted to the conversion Type. 
+
+
+
+|Name | Description |
+|-----|------|
+|obj: |The object to be converted.|
+|conversionType: |The target type the object is to be converted to.|
 
 
 

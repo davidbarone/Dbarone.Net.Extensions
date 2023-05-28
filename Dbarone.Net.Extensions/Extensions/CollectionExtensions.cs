@@ -18,6 +18,13 @@ public static class CollectionExtensions
     /// index++;
     /// </code>
     /// </example>
+    /// <example>
+    /// Another example.
+    /// <code>
+    /// var index = 6;
+    /// index++;
+    /// </code>
+    /// </example>
     /// <returns>A random sample of the data.</returns>
     public static IEnumerable<T> Sample<T>(this IEnumerable<T> data, int sampleSize)
     {
