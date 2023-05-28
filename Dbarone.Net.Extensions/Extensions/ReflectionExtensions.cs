@@ -310,6 +310,7 @@ public static class ReflectionExtensions
     /// <summary>
     /// Determines whether an object can be converted to a specific type.
     /// Wrapper function for the the System.Convert class.
+    /// For details of conversion rules, see: https://learn.microsoft.com/en-us/dotnet/api/system.convert?view=net-7.0
     /// </summary>
     /// <param name="obj">The object to be converted.</param>
     /// <param name="conversionType">The target type the object is to be converted to.</param>
