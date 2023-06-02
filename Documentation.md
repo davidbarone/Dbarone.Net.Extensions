@@ -1,6 +1,7 @@
 # Assembly: Dbarone.Net.Extensions
 ## Contents
 - [Dbarone.Net.Extensions.CollectionExtensions](#dbaronenetextensionscollectionextensions)
+- [Dbarone.Net.Extensions.DictionaryExtensions](#dbaronenetextensionsdictionaryextensions)
 - [Dbarone.Net.Extensions.ObjectExtensions](#dbaronenetextensionsobjectextensions)
 - [Dbarone.Net.Extensions.ReflectionExtensions](#dbaronenetextensionsreflectionextensions)
 - [Dbarone.Net.Extensions.Justification](#dbaronenetextensionsjustification)
@@ -87,6 +88,31 @@ id: `M:Dbarone.Net.Extensions.CollectionExtensions.Union(System.Object,System.Ob
 |-----|------|
 |obj1: |The current object.|
 |obj2: |A set of additional objects.|
+
+
+
+
+---
+## Dbarone.Net.Extensions.DictionaryExtensions
+Namespace: `Dbarone.Net.Extensions`
+
+ Extension methods for dictionaries. 
+
+### method: DictionaryExtensions.GetOrDefault``2
+id: `M:Dbarone.Net.Extensions.DictionaryExtensions.GetOrDefault``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)`
+
+ Gets a value from a dictionary, or default if the key does not exist. 
+
+|Param | Description |
+|-----|-----|
+|K: |The key type.|
+|T: |The value type|
+
+|Name | Description |
+|-----|------|
+|dict: |The dictionary to get the value from.|
+|key: |The key value.|
+|defaultValue: |The default value to return if the key is not found in the dictionary.|
 
 
 
