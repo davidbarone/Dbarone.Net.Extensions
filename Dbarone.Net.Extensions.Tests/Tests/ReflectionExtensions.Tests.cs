@@ -2,6 +2,7 @@ namespace Dbarone.Net.Extensions.Tests;
 using Xunit;
 using System;
 using Dbarone.Net.Extensions;
+using System.Collections;
 
 public class ReflectionExtensionsTests
 {
@@ -91,4 +92,60 @@ public class ReflectionExtensionsTests
         Assert.Equal(expectedType, newType);
     }
 
+    [Theory]
+    [InlineData(typeof(List<string>), true)]
+    [InlineData(typeof(int[]), true)]
+    [InlineData(typeof(string), false)]
+    [InlineData(typeof(object), false )]
+    [InlineData(typeof(Hashtable), false )]
+    public void TestIsEnumerableType(Type testType, bool expectedResult)
+    {
+        Assert.Equal(expectedResult, testType.IsEnumerableType());
+    }
+
+    [Theory]
+    [InlineData(typeof(List<string>), true)]
+    [InlineData(typeof(int[]), true)]
+    [InlineData(typeof(string), false)]
+    [InlineData(typeof(object), false )]
+    [InlineData(typeof(Hashtable), true )]
+    public void TestIsCollectionType(Type testType, bool expectedResult)
+    {
+        Assert.Equal(expectedResult, testType.IsCollectionType());
+    }
+
+   [Theory]
+    [InlineData(typeof(Dictionary<string, object>), true)]
+    [InlineData(typeof(Hashtable), true )]
+    [InlineData(typeof(List<string>), false)]
+    public void TestIsDictionaryType(Type testType, bool expectedResult)
+    {
+        Assert.Equal(expectedResult, testType.IsDictionaryType());
+    }
+
+    [Theory]
+    [InlineData(typeof(bool), true)]
+    [InlineData(typeof(int), true)]
+    [InlineData(typeof(string), true)]
+    [InlineData(typeof(object), true )]
+    [InlineData(typeof(DateTime), false )]
+    [InlineData(typeof(int[]), false)]
+    public void TestIsBuiltinType(Type testType, bool expectedResult)
+    {
+        Assert.Equal(expectedResult, testType.IsBuiltInType());
+    }
+
+   [Theory]
+    [InlineData(typeof(bool), "bool")]
+    [InlineData(typeof(Boolean), "bool")]
+    [InlineData(typeof(int), "int")]
+    [InlineData(typeof(Int32), "int")]
+    [InlineData(typeof(string), "string")]
+    [InlineData(typeof(String), "string")]
+    [InlineData(typeof(int[]), "int[]")]
+    [InlineData(typeof(List<string>), "List<string>")]
+    public void TestGetFriendlyName(Type testType, string expectedResult)
+    {
+        Assert.Equal(expectedResult, testType.GetFriendlyName());
+    }
 }

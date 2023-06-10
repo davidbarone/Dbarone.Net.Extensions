@@ -1,5 +1,37 @@
 ﻿namespace Dbarone.Net.Extensions;
 using System.Text;
+using System.Globalization;
+
+/// <summary>
+/// Specifies a string case.
+/// </summary>
+public enum CaseType
+{
+    /// <summary>
+    /// Lower case string.
+    /// </summary>
+    LowerCase,
+
+    /// <summary>
+    /// Upper case string.
+    /// </summary>
+    UpperCase,
+
+    /// <summary>
+    /// Pascal case string.
+    /// </summary>
+    PascalCase,
+
+    /// <summary>
+    /// Camel case string.
+    /// </summary>
+    CamelCase,
+
+    /// <summary>
+    /// Snake case string.
+    /// </summary>
+    SnakeCase
+}
 
 /// <summary>
 /// The justification type.
@@ -220,9 +252,38 @@ public static class StringExtensions
     /// Converts a string to snake case.
     /// </summary>
     /// <param name="str">The input string value.</param>
+    /// <param name="delimiter">Optional delimiter. Defaults to "_".</param>
     /// <returns></returns>
-    public static string ToSnakeCase(this string str)
+    public static string ToSnakeCase(this string str, string delimiter = "_")
     {
-        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
+        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? delimiter + x.ToString() : x.ToString())).ToLower();
+    }
+
+    /// <summary>
+    /// Converts a string to a specific case. As well as converting to upper/lower case, this method can be used
+    /// to convert text between Pascal, camel, and snake case.
+    /// </summary>
+    /// <param name="str">The input string.</param>
+    /// <param name="case">The case to convert to.</param>
+    /// <param name="culture">Option culture setting.</param>
+    /// <param name="delimiter">Optional delimiter</param>
+    /// <returns></returns>
+    public static string ChangeCase(this string str, CaseType @case, CultureInfo? culture = null, string delimiter = "_")
+    {
+        switch (@case)
+        {
+            case CaseType.LowerCase:
+                return str.ToLower(culture);
+            case CaseType.UpperCase:
+                return str.ToLower(culture);
+            case CaseType.PascalCase:
+                return (char.ToUpper(str[0]) + str.Substring(1)).Replace(delimiter, "");
+            case CaseType.CamelCase:
+                return (char.ToLower(str[0]) + str.Substring(1)).Replace(delimiter, "");
+            case CaseType.SnakeCase:
+                return str.ToSnakeCase();
+            default:
+                return str;
+        }
     }
 }

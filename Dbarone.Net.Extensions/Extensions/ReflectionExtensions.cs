@@ -427,7 +427,7 @@ public static class ReflectionExtensions
     /// <summary>
     /// Returns true if the type is a collection type (e.g. implements ICollection). Includes types like List and HashSet.
     /// </summary>
-    public static bool IsCollection(Type type)
+    public static bool IsCollectionType(this Type type)
     {
         return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(ICollection<>)) ||
             type.GetInterfaces().Any(x => x == typeof(ICollection) ||
@@ -437,7 +437,7 @@ public static class ReflectionExtensions
     /// <summary>
     /// Returns true if the type is a dictionary type (implements IDictionary or generic variant).
     /// </summary>
-    public static bool IsDictionary(Type type)
+    public static bool IsDictionaryType(this Type type)
     {
         return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(IDictionary<,>)) ||
             type.GetInterfaces().Any(x => x == typeof(IDictionary) ||

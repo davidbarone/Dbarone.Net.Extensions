@@ -14,4 +14,16 @@ public class StringExtensionTests
     {
         Assert.Equal(expected, input.ToSnakeCase());
     }
+
+    [Theory]
+    [InlineData("TheCatSatOnTheMat", CaseType.CamelCase, "theCatSatOnTheMat")]
+    [InlineData("TheCatSatOnTheMat", CaseType.SnakeCase, "the_cat_sat_on_the_mat")]
+    [InlineData("the_cat_sat_on_the_mat", CaseType.CamelCase, "theCatSatOnTheMat")]
+    [InlineData("the_cat_sat_on_the_mat", CaseType.PascalCase, "TheCatSatOnTheMat")]
+    [InlineData("theCatSatOnTheMat", CaseType.PascalCase, "TheCatSatOnTheMat")]
+    [InlineData("theCatSatOnTheMat", CaseType.SnakeCase, "the_cat_sat_on_the_mat")]
+    public void a(string input, CaseType @case, string expected) {
+        var actual = input.ChangeCase(@case);
+
+    }
 }
