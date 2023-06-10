@@ -351,7 +351,7 @@ public static class ReflectionExtensions
     /// <summary>
     /// Gets the underlying types of a generic type.
     /// </summary>
-    public static Type[] GetGenericTypesOf(Type type)
+    public static Type[] GetGenericArguments(this Type type)
     {
         if (!type.GetTypeInfo().IsGenericType) return new Type[] { };
 
@@ -364,7 +364,7 @@ public static class ReflectionExtensions
     /// <typeparam name="T">The generic type to construct.</typeparam>
     /// <param name="argumentTypes">The generic type arguments.</param>
     /// <returns>Concrete type based on the generic type and supplied arguments.</returns>
-    public static Type MakeGenericTypeFrom<T>(params Type[] argumentTypes)
+    public static Type MakeGenericType<T>(params Type[] argumentTypes)
     {
         var type = typeof(T);
         return type.MakeGenericType(argumentTypes);

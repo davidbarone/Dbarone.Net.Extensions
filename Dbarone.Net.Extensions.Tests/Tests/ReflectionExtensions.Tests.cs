@@ -1,7 +1,7 @@
+namespace Dbarone.Net.Extensions.Tests;
 using Xunit;
 using System;
-
-namespace Dbarone.Net.Extensions.Tests;
+using Dbarone.Net.Extensions;
 
 public class ReflectionExtensionsTests
 {
@@ -67,8 +67,28 @@ public class ReflectionExtensionsTests
     [InlineData((int)123, typeof(long), true)]
     [InlineData("a string value", typeof(int), false)]
     [InlineData((long)long.MaxValue, typeof(int), false)]
-    public void TestCanConvertTo(object obj, Type type, bool expected) {
+    public void TestCanConvertTo(object obj, Type type, bool expected)
+    {
 
         Assert.Equal(expected, obj.CanConvertTo(type));
     }
+
+    [Theory]
+    [InlineData(typeof(List<string>), new Type[] { typeof(string) })]
+    [InlineData(typeof(Dictionary<string, object>), new Type[] { typeof(string), typeof(object) })]
+    public void TestGetGenericTypes(Type genericType, Type[] expectedTypes)
+    {
+        var args = genericType.GetGenericArguments();
+        Assert.Equal(expectedTypes, args);
+    }
+
+    [Theory]
+    [InlineData(typeof(List<>), new Type[] { typeof(string) }, typeof(List<string>))]
+    [InlineData(typeof(Dictionary<,>), new Type[] { typeof(string), typeof(object) }, typeof(Dictionary<string, object>))]
+    public void TestMakeGenericType(Type genericType, Type[] typeArguments, Type expectedType)
+    {
+        var newType = genericType.MakeGenericType(typeArguments);
+        Assert.Equal(expectedType, newType);
+    }
+
 }
