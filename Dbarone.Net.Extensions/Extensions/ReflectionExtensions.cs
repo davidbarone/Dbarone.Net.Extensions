@@ -1,5 +1,6 @@
 ﻿namespace Dbarone.Net.Extensions;
 using System.Reflection;
+using System.Collections;
 
 /// <summary>
 /// A collection of .NET reflection extension methods.
@@ -345,5 +346,152 @@ public static class ReflectionExtensions
         {
             return null;
         }
+    }
+
+    /// <summary>
+    /// Gets the underlying types of a generic type.
+    /// </summary>
+    public static Type[] GetGenericTypesOf(Type type)
+    {
+        if (!type.GetTypeInfo().IsGenericType) return new Type[] { };
+
+        return type.GetGenericArguments();
+    }
+
+    /// <summary>
+    /// Makes a concrete generic type from a generic type and supplied generic argument types. 
+    /// </summary>
+    /// <typeparam name="T">The generic type to construct.</typeparam>
+    /// <param name="argumentTypes">The generic type arguments.</param>
+    /// <returns>Concrete type based on the generic type and supplied arguments.</returns>
+    public static Type MakeGenericTypeFrom<T>(params Type[] argumentTypes)
+    {
+        var type = typeof(T);
+        return type.MakeGenericType(argumentTypes);
+    }
+
+    /// <summary>
+    /// Returns true if the type is an enumerable type. Includes IEnumerable types, arrays
+    /// Note that the String type is NOT considered an enumerable type for this method.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static bool IsEnumerableType(this Type type)
+    {
+        if (type == typeof(IEnumerable) || type.IsArray) return true;
+        if (type == typeof(string)) return false; // do not define "String" as IEnumerable<char>
+
+        foreach (var @interface in type.GetInterfaces())
+        {
+            if (@interface.GetTypeInfo().IsGenericType)
+            {
+                if (@interface.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    // if needed, you can also return the type used as generic argument
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Returns true if the type is one of the .NET built-in types.
+    /// See: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>Returns true if the type is one of the .NET built-in.</returns>
+    public static bool IsBuiltInType(this Type type)
+    {
+        return
+            type == typeof(bool) ||
+            type == typeof(byte) ||
+            type == typeof(sbyte) ||
+            type == typeof(char) ||
+            type == typeof(decimal) ||
+            type == typeof(double) ||
+            type == typeof(float) ||
+            type == typeof(int) ||
+            type == typeof(uint) ||
+            type == typeof(nint) ||
+            type == typeof(nuint) ||
+            type == typeof(long) ||
+            type == typeof(ulong) ||
+            type == typeof(short) ||
+            type == typeof(ushort) ||
+            type == typeof(object) ||
+            type == typeof(string);
+    }
+
+    /// <summary>
+    /// Returns true if the type is a collection type (e.g. implements ICollection). Includes types like List and HashSet.
+    /// </summary>
+    public static bool IsCollection(Type type)
+    {
+        return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(ICollection<>)) ||
+            type.GetInterfaces().Any(x => x == typeof(ICollection) ||
+            (x.GetTypeInfo().IsGenericType ? x.GetGenericTypeDefinition() == typeof(ICollection<>) : false));
+    }
+
+    /// <summary>
+    /// Returns true if the type is a dictionary type (implements IDictionary or generic variant).
+    /// </summary>
+    public static bool IsDictionary(Type type)
+    {
+        return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(IDictionary<,>)) ||
+            type.GetInterfaces().Any(x => x == typeof(IDictionary) ||
+            (x.GetTypeInfo().IsGenericType ? x.GetGenericTypeDefinition().Equals(typeof(IDictionary<,>)) : false));
+    }
+
+    private static Dictionary<Type, string> _defaultDictionary = new Dictionary<System.Type, string>
+    {
+        {typeof(int), "int"},
+        {typeof(uint), "uint"},
+        {typeof(long), "long"},
+        {typeof(ulong), "ulong"},
+        {typeof(short), "short"},
+        {typeof(ushort), "ushort"},
+        {typeof(byte), "byte"},
+        {typeof(sbyte), "sbyte"},
+        {typeof(bool), "bool"},
+        {typeof(float), "float"},
+        {typeof(double), "double"},
+        {typeof(decimal), "decimal"},
+        {typeof(char), "char"},
+        {typeof(string), "string"},
+        {typeof(object), "object"},
+        {typeof(void), "void"}
+    };
+
+    /// <summary>
+    /// Gets a friendly name for a type.
+    /// See: https://stackoverflow.com/questions/16466380/get-user-friendly-name-for-generic-type-in-c-sharp
+    /// </summary>
+    /// <param name="type">The type.</param>
+    /// <returns>Returns a friendly name for the type.</returns>
+    public static string GetFriendlyName(this Type type)
+    {
+        return type.GetFriendlyName(_defaultDictionary);
+    }
+
+    private static string GetFriendlyName(this Type type, Dictionary<Type, string> translations)
+    {
+        if (translations.ContainsKey(type))
+            return translations[type];
+        else if (type.IsArray)
+        {
+            var rank = type.GetArrayRank();
+            var commas = rank > 1
+                ? new string(',', rank - 1)
+                : "";
+            return GetFriendlyName(type.GetElementType()!, translations) + $"[{commas}]";
+        }
+        else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            return type.GetGenericArguments()[0].GetFriendlyName() + "?";
+        else if (type.IsGenericType)
+            return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(x => GetFriendlyName(x)).ToArray()) + ">";
+        else
+            return type.Name;
     }
 }

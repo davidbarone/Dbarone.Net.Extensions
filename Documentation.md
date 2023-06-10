@@ -2,6 +2,7 @@
 ## Contents
 - [Dbarone.Net.Extensions.CollectionExtensions](#dbaronenetextensionscollectionextensions)
 - [Dbarone.Net.Extensions.DictionaryExtensions](#dbaronenetextensionsdictionaryextensions)
+- [Dbarone.Net.Extensions.LinqExtensions](#dbaronenetextensionslinqextensions)
 - [Dbarone.Net.Extensions.ObjectExtensions](#dbaronenetextensionsobjectextensions)
 - [Dbarone.Net.Extensions.ReflectionExtensions](#dbaronenetextensionsreflectionextensions)
 - [Dbarone.Net.Extensions.Justification](#dbaronenetextensionsjustification)
@@ -113,6 +114,24 @@ id: `M:Dbarone.Net.Extensions.DictionaryExtensions.GetOrDefault``2(System.Collec
 |dict: |The dictionary to get the value from.|
 |key: |The key value.|
 |defaultValue: |The default value to return if the key is not found in the dictionary.|
+
+
+
+
+---
+## Dbarone.Net.Extensions.LinqExtensions
+Namespace: `Dbarone.Net.Extensions`
+
+ Extension methods related to Linq and expressions. 
+
+### method: LinqExtensions.GetMemberPath
+id: `M:Dbarone.Net.Extensions.LinqExtensions.GetMemberPath(System.Linq.Expressions.Expression)`
+
+ Converts a lambda member expression to a path string. Used to convert lambda expressions like x => x.CustomerId to "CustomerId". Supports multiple levels: x => x.Customer.Address. Supports list levels: x => x.Addresses.Select(z => z.StreetName). Based on http://stackoverflow.com/questions/671968/retrieving-property-name-from-lambda-expression and litedb project implementation. 
+
+
+
+
 
 
 
