@@ -22,8 +22,8 @@ public class StringExtensionTests
     [InlineData("the_cat_sat_on_the_mat", CaseType.PascalCase, "TheCatSatOnTheMat")]
     [InlineData("theCatSatOnTheMat", CaseType.PascalCase, "TheCatSatOnTheMat")]
     [InlineData("theCatSatOnTheMat", CaseType.SnakeCase, "the_cat_sat_on_the_mat")]
-    public void a(string input, CaseType @case, string expected) {
+    public void a(string input, CaseType @case, string expected)
+    {
         var actual = input.ChangeCase(@case);
-
     }
 }

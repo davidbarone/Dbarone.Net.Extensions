@@ -5,6 +5,7 @@
 - [Dbarone.Net.Extensions.LinqExtensions](#dbaronenetextensionslinqextensions)
 - [Dbarone.Net.Extensions.ObjectExtensions](#dbaronenetextensionsobjectextensions)
 - [Dbarone.Net.Extensions.ReflectionExtensions](#dbaronenetextensionsreflectionextensions)
+- [Dbarone.Net.Extensions.CaseType](#dbaronenetextensionscasetype)
 - [Dbarone.Net.Extensions.Justification](#dbaronenetextensionsjustification)
 - [Dbarone.Net.Extensions.StringExtensions](#dbaronenetextensionsstringextensions)
 
@@ -500,6 +501,120 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.ConvertTo(System.Object,Syste
 
 
 
+### method: ReflectionExtensions.GetGenericArguments
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetGenericArguments(System.Type)`
+
+ Gets the underlying types of a generic type. 
+
+
+
+
+
+
+
+### method: ReflectionExtensions.MakeGenericType``1
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.MakeGenericType``1(System.Type[])`
+
+ Makes a concrete generic type from a generic type and supplied generic argument types. 
+
+|Param | Description |
+|-----|-----|
+|T: |The generic type to construct.|
+
+|Name | Description |
+|-----|------|
+|argumentTypes: |The generic type arguments.|
+
+
+
+### method: ReflectionExtensions.IsEnumerableType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsEnumerableType(System.Type)`
+
+ Returns true if the type is an enumerable type. Includes IEnumerable types, arrays Note that the String type is NOT considered an enumerable type for this method. 
+
+
+
+|Name | Description |
+|-----|------|
+|type: ||
+
+
+
+### method: ReflectionExtensions.IsBuiltInType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsBuiltInType(System.Type)`
+
+ Returns true if the type is one of the .NET built-in types. See: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types 
+
+
+
+|Name | Description |
+|-----|------|
+|type: |The type to check.|
+
+
+
+### method: ReflectionExtensions.IsCollectionType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsCollectionType(System.Type)`
+
+ Returns true if the type is a collection type (e.g. implements ICollection). Includes types like List and HashSet. 
+
+
+
+
+
+
+
+### method: ReflectionExtensions.IsDictionaryType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsDictionaryType(System.Type)`
+
+ Returns true if the type is a dictionary type (implements IDictionary or generic variant). 
+
+
+
+
+
+
+
+### method: ReflectionExtensions.GetFriendlyName
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetFriendlyName(System.Type)`
+
+ Gets a friendly name for a type. See: https://stackoverflow.com/questions/16466380/get-user-friendly-name-for-generic-type-in-c-sharp 
+
+
+
+|Name | Description |
+|-----|------|
+|type: |The type.|
+
+
+
+
+---
+## Dbarone.Net.Extensions.CaseType
+Namespace: `Dbarone.Net.Extensions`
+
+ Specifies a string case. 
+
+### F:Dbarone.Net.Extensions.CaseType.LowerCase
+ Lower case string. 
+
+---
+### F:Dbarone.Net.Extensions.CaseType.UpperCase
+ Upper case string. 
+
+---
+### F:Dbarone.Net.Extensions.CaseType.PascalCase
+ Pascal case string. 
+
+---
+### F:Dbarone.Net.Extensions.CaseType.CamelCase
+ Camel case string. 
+
+---
+### F:Dbarone.Net.Extensions.CaseType.SnakeCase
+ Snake case string. 
+
+---
 
 ---
 ## Dbarone.Net.Extensions.Justification
@@ -649,7 +764,7 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.WordWrap(System.String,System.Int
 
 
 ### method: StringExtensions.ToSnakeCase
-id: `M:Dbarone.Net.Extensions.StringExtensions.ToSnakeCase(System.String)`
+id: `M:Dbarone.Net.Extensions.StringExtensions.ToSnakeCase(System.String,System.String)`
 
  Converts a string to snake case. 
 
@@ -658,6 +773,23 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.ToSnakeCase(System.String)`
 |Name | Description |
 |-----|------|
 |str: |The input string value.|
+|delimiter: |Optional delimiter. Defaults to "_".|
+
+
+
+### method: StringExtensions.ChangeCase
+id: `M:Dbarone.Net.Extensions.StringExtensions.ChangeCase(System.String,Dbarone.Net.Extensions.CaseType,System.Globalization.CultureInfo,System.String)`
+
+ Converts a string to a specific case. As well as converting to upper/lower case, this method can be used to convert text between Pascal, camel, and snake case. 
+
+
+
+|Name | Description |
+|-----|------|
+|str: |The input string.|
+|case: |The case to convert to.|
+|culture: |Option culture setting.|
+|delimiter: |Optional delimiter|
 
 
 
