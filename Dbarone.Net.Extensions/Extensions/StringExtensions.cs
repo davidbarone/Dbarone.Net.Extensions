@@ -277,6 +277,8 @@ public static class StringExtensions
     {
         switch (@case)
         {
+            case CaseType.None:
+                return str;
             case CaseType.LowerCase:
                 return str.ToLower(culture);
             case CaseType.UpperCase:
