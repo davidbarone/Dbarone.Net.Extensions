@@ -8,6 +8,11 @@ using System.Globalization;
 public enum CaseType
 {
     /// <summary>
+    /// No specific case defined.
+    /// </summary>
+    None,
+
+    /// <summary>
     /// Lower case string.
     /// </summary>
     LowerCase,

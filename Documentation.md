@@ -338,6 +338,19 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.Value(System.Object,System.St
 
 
 
+### method: ReflectionExtensions.GetTypes
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetTypes(System.AppDomain)`
+
+ Gets the types implemented in all assemblies within an AppDomain. 
+
+
+
+|Name | Description |
+|-----|------|
+|domain: |The AppDomain.|
+
+
+
 ### method: ReflectionExtensions.GetTypesAssignableFrom
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetTypesAssignableFrom(System.AppDomain,System.Type)`
 
@@ -595,6 +608,10 @@ Namespace: `Dbarone.Net.Extensions`
 
  Specifies a string case. 
 
+### F:Dbarone.Net.Extensions.CaseType.None
+ No specific case defined. 
+
+---
 ### F:Dbarone.Net.Extensions.CaseType.LowerCase
  Lower case string. 
 
@@ -790,6 +807,20 @@ id: `M:Dbarone.Net.Extensions.StringExtensions.ChangeCase(System.String,Dbarone.
 |case: |The case to convert to.|
 |culture: |Option culture setting.|
 |delimiter: |Optional delimiter|
+
+
+
+### method: StringExtensions.Like
+id: `M:Dbarone.Net.Extensions.StringExtensions.Like(System.String,System.String)`
+
+ Implementation of Like function similar to SQL Like. Single wildcard character is '_' and multi-character wildcard is '%'. Also supports [] characters to define character domains. See: https://stackoverflow.com/questions/5417070/c-sharp-version-of-sql-like/8583383#8583383 
+
+
+
+|Name | Description |
+|-----|------|
+|str: |The input string.|
+|pattern: |The pattern to test for.|
 
 
 
