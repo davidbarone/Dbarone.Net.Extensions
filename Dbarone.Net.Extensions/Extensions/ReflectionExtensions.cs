@@ -118,12 +118,11 @@ public static class ReflectionExtensions
     }
 
     /// <summary>
-    /// Returns a collection of types in an app domain that a specified base type is assignable from.
+    /// Gets the types implemented in all assemblies within an AppDomain.
     /// </summary>
-    /// <param name="domain">The AppDomain to search for types.</param>
-    /// <param name="baseType">The base type.</param>
-    /// <returns>Returns a collection of types that the base type is assignable from.</returns>
-    public static IEnumerable<Type> GetTypesAssignableFrom(this AppDomain domain, Type baseType)
+    /// <param name="domain">The AppDomain.</param>
+    /// <returns>All types implemented.</returns>
+    public static IEnumerable<Type> GetTypes(this AppDomain domain)
     {
         List<Type> types = new List<Type>();
         // Get all the command types:
@@ -131,18 +130,25 @@ public static class ReflectionExtensions
         {
             try
             {
-                foreach (var type in assembly.GetTypes().Where(t => baseType.IsAssignableFrom(t)))
-                {
-                    // Remove word 'command' from class name if present
-                    if (!types.Contains(type))
-                        types.Add(type);
-                }
+                foreach (var type in assembly.GetTypes())
+                    types.Add(type);
             }
             catch (ReflectionTypeLoadException)
             {
             }
         }
         return types;
+    }
+
+    /// <summary>
+    /// Returns a collection of types in an app domain that a specified base type is assignable from.
+    /// </summary>
+    /// <param name="domain">The AppDomain to search for types.</param>
+    /// <param name="baseType">The base type.</param>
+    /// <returns>Returns a collection of types that the base type is assignable from.</returns>
+    public static IEnumerable<Type> GetTypesAssignableFrom(this AppDomain domain, Type baseType)
+    {
+        return domain.GetTypes().Where(t => baseType.IsAssignableFrom(t));
     }
 
     /// <summary>
@@ -153,21 +159,7 @@ public static class ReflectionExtensions
     /// <returns>Returns a collection of types that subclass the specified type.</returns>
     public static IEnumerable<Type> GetSubclassTypesOf<T>(this AppDomain domain)
     {
-        List<Type> types = new List<Type>();
-
-        // Get all the command types:
-        foreach (var assembly in domain.GetAssemblies())
-        {
-            try
-            {
-                foreach (var type in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(T))))
-                    types.Add(type);
-            }
-            catch (ReflectionTypeLoadException)
-            {
-            }
-        }
-        return types;
+        return domain.GetTypes().Where(t => t.IsSubclassOf(typeof(T)));
     }
 
     /// <summary>
