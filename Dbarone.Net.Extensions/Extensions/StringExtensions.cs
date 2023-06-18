@@ -282,15 +282,32 @@ public static class StringExtensions
             case CaseType.LowerCase:
                 return str.ToLower(culture);
             case CaseType.UpperCase:
-                return str.ToLower(culture);
+                return str.ToUpper(culture);
             case CaseType.PascalCase:
                 return (char.ToUpper(str[0]) + str.Substring(1)).Replace(delimiter, "");
             case CaseType.CamelCase:
                 return (char.ToLower(str[0]) + str.Substring(1)).Replace(delimiter, "");
             case CaseType.SnakeCase:
-                return str.ToSnakeCase();
+                return str.ToSnakeCase(delimiter);
             default:
                 return str;
+        }
+    }
+
+    public static bool IsCase(this string str, CaseType @case, CultureInfo? culture = null, string delimiter = "_")
+    {
+        var changedCase = str.ChangeCase(@case, culture, delimiter);
+        if (str.IsNullOrEmpty())
+        {
+            return false;
+        }
+        if (changedCase.Equals(str, StringComparison.Ordinal))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

@@ -99,4 +99,21 @@ public class StringExtensionTests
         var result = input.Like(pattern);
         Assert.Equal(expectedResult, result);
     }
+
+    [Theory]
+    [InlineData("", CaseType.LowerCase, false)] // empty string always returns false
+    [InlineData("this text is lower case", CaseType.LowerCase, true)]
+    [InlineData("this text is not lower case", CaseType.UpperCase, false)]
+    [InlineData("this text is not upper case", CaseType.UpperCase, false)]
+    [InlineData("THIS TEXT IS UPPER CASE", CaseType.UpperCase, true)]
+    [InlineData("thisTextIsNotSnakeCase", CaseType.SnakeCase, false)]
+    [InlineData("this_text_is_snake_case", CaseType.SnakeCase, true)]
+    [InlineData("this text is not pascal case", CaseType.PascalCase, false)]
+    [InlineData("ThisTextIsPascalCase", CaseType.PascalCase, true)]
+    [InlineData("this_text_is_not_camel_case", CaseType.CamelCase, false)]
+    [InlineData("thisTextIsCamelCase", CaseType.CamelCase, true)]
+    public void IsCase_WhenProvidedInput_ReturnsCorrectResult(string input, CaseType @case, bool expectedResult)
+    {
+        Assert.Equal(expectedResult, input.IsCase(@case));
+    }
 }
