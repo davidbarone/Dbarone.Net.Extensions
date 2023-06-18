@@ -7,7 +7,7 @@
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Dbarone.Net.Extensions</PackageId>
-    <Version>1.0.4</Version>
+    <Version>1.0.6</Version>
     <Authors>David Barone</Authors>
     <Company>Dbarone.com</Company>
     <Description>A library of .NET extension methods.</Description>

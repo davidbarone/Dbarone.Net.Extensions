@@ -280,9 +280,9 @@ public static class StringExtensions
             case CaseType.None:
                 return str;
             case CaseType.LowerCase:
-                return str.ToLower(culture);
+                return str.ToLower(culture).Replace(delimiter, "");
             case CaseType.UpperCase:
-                return str.ToUpper(culture);
+                return str.ToUpper(culture).Replace(delimiter, "");
             case CaseType.PascalCase:
                 return (char.ToUpper(str[0]) + str.Substring(1)).Replace(delimiter, "");
             case CaseType.CamelCase:
