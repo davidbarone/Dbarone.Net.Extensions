@@ -120,7 +120,7 @@ public class ReflectionExtensionsTests
     [InlineData(typeof(int[]), typeof(int))]
     [InlineData(typeof(string), typeof(char))]
     [InlineData(typeof(object), null)]
-    [InlineData(typeof(Hashtable), typeof(KeyValuePair))]
+    [InlineData(typeof(Hashtable), typeof(object))]
     [InlineData(typeof(IEnumerable), typeof(object))]
     [InlineData(typeof(ArrayList), typeof(object))]
     public void TestGetElementType(Type testType, Type? expectedElementType)

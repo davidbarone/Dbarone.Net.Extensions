@@ -407,23 +407,31 @@ public static class ReflectionExtensions
             // Type is generic type implementing IEnumerable<>. Get the generic type parameter
             return type.GetGenericArguments()[0];
         }
-        else if (type==typeof(Hashtable)) {
-            // some common non generic IEnumerable types
-            return typeof(KeyValuePair);
-        }
-        else if (type==typeof(SortedList)) {
-            // some common non generic IEnumerable types
-            return typeof(KeyValuePair);
-        }
-        else if (type==typeof(string)) {
-            // some common non generic IEnumerable types
-            return typeof(char);
-        }
         else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type))
         {
-            // For other non generic IEnumerable types we can only infer object element type.
-            // We would have to peek at the first actual object in the sequence to get the element type.
-            return typeof(object);
+            // Use reflection to find the return type of the 'Current'
+            // property on the GetEnumerator method.
+            var methods = type.GetMethods();
+            var miGetEnumerator = methods.First(m => m.Name == "GetEnumerator" && m.GetParameters().Count() == 0);
+            var typGetEnumerator = miGetEnumerator.ReturnType;
+            var piCurrent = typGetEnumerator.GetProperty("Current");
+            if (piCurrent == null)
+            {
+                // For example, IDictionaryEnumerator inherits from IEnumerator
+                // and doesn't have a 'Current' property itself.
+                var ii = typGetEnumerator.GetInterfaces();
+                var i = typGetEnumerator.GetInterfaces().FirstOrDefault(x => x == typeof(IEnumerator));
+                if (i != null)
+                {
+                    piCurrent = i.GetProperty("Current");
+                }
+            }
+            if (piCurrent != null)
+            {
+                var elementType = piCurrent.PropertyType;
+                return elementType;
+            }
+            return null;    // shouldn't get here.
         }
         else
         {
