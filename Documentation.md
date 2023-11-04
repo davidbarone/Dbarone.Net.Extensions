@@ -543,13 +543,24 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.MakeGenericType``1(System.Typ
 ### method: ReflectionExtensions.IsEnumerableType
 id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsEnumerableType(System.Type)`
 
- Returns true if the type is an enumerable type. Includes IEnumerable types, arrays Note that the String type is NOT considered an enumerable type for this method. 
+ Returns true if the type is an enumerable type. Includes IEnumerable types, arrays Note that the string type is also considered an enumerable type for this method. 
 
 
 
 |Name | Description |
 |-----|------|
 |type: ||
+
+
+
+### method: ReflectionExtensions.GetEnumerableElementType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetEnumerableElementType(System.Type)`
+
+ Gets the inner element type of collections or sequence types. Returns null if not an IEnumerable type. 
+
+
+
+
 
 
 
@@ -598,6 +609,20 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetFriendlyName(System.Type)`
 |Name | Description |
 |-----|------|
 |type: |The type.|
+
+
+
+### method: ReflectionExtensions.IsAssignableToGenericType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsAssignableToGenericType(System.Type,System.Type)`
+
+ Returns true if the current type is assignable to the generic type. 
+
+
+
+|Name | Description |
+|-----|------|
+|givenType: |The current type.|
+|genericType: |The generic type.|
 
 
 
