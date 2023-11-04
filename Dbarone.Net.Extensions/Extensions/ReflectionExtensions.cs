@@ -364,14 +364,14 @@ public static class ReflectionExtensions
 
     /// <summary>
     /// Returns true if the type is an enumerable type. Includes IEnumerable types, arrays
-    /// Note that the String type is NOT considered an enumerable type for this method.
+    /// Note that the string type is also considered an enumerable type for this method.
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
     public static bool IsEnumerableType(this Type type)
     {
-        if (type == typeof(IEnumerable) || type.IsArray) return true;
-        if (type == typeof(string)) return false; // do not define "String" as IEnumerable<char>
+        if (typeof(IEnumerable).IsAssignableFrom(type) || type.IsArray) return true;
+        //if (type == typeof(string)) return false; // do not define "String" as IEnumerable<char>
 
         foreach (var @interface in type.GetInterfaces())
         {
@@ -386,6 +386,49 @@ public static class ReflectionExtensions
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Gets the inner element type of collections or sequence types. Returns null if not an IEnumerable type.
+    /// </summary>
+    public static Type? GetEnumerableElementType(this Type type)
+    {
+        if (type.IsEnumerableType() == false)
+        {
+            return null;
+        }
+        else if (type.IsArray)
+        {
+            // Type is array - get the array element type
+            return type.GetElementType()!;
+        }
+        else if (type.IsGenericType && type.IsAssignableToGenericType(typeof(IEnumerable<>)))
+        {
+            // Type is generic type implementing IEnumerable<>. Get the generic type parameter
+            return type.GetGenericArguments()[0];
+        }
+        else if (type==typeof(Hashtable)) {
+            // some common non generic IEnumerable types
+            return typeof(KeyValuePair);
+        }
+        else if (type==typeof(SortedList)) {
+            // some common non generic IEnumerable types
+            return typeof(KeyValuePair);
+        }
+        else if (type==typeof(string)) {
+            // some common non generic IEnumerable types
+            return typeof(char);
+        }
+        else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type))
+        {
+            // For other non generic IEnumerable types we can only infer object element type.
+            // We would have to peek at the first actual object in the sequence to get the element type.
+            return typeof(object);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -485,5 +528,32 @@ public static class ReflectionExtensions
             return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(x => GetFriendlyName(x)).ToArray()) + ">";
         else
             return type.Name;
+    }
+
+    /// <summary>
+    /// Returns true if the current type is assignable to the generic type.
+    /// </summary>
+    /// <param name="givenType">The current type.</param>
+    /// <param name="genericType">The generic type.</param>
+    /// <returns>Returns true if the current type is assignable to the generic type.</returns>
+    public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+    {
+        // https://stackoverflow.com/questions/5461295/using-isassignablefrom-with-open-generic-types
+
+        var interfaceTypes = givenType.GetInterfaces();
+
+        foreach (var it in interfaceTypes)
+        {
+            if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+                return true;
+        }
+
+        if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+            return true;
+
+        Type baseType = givenType.BaseType;
+        if (baseType == null) return false;
+
+        return IsAssignableToGenericType(baseType, genericType);
     }
 }

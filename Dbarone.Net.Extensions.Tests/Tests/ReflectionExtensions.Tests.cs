@@ -93,30 +93,56 @@ public class ReflectionExtensionsTests
     }
 
     [Theory]
+    [InlineData(typeof(List<int>), typeof(List<>), true)]
+    [InlineData(typeof(List<int>), typeof(IEnumerable<>), true)]
+    [InlineData(typeof(List<int>), typeof(List<long>), false)]
+    [InlineData(typeof(ICollection<int>), typeof(IList<int>), false)]
+    public void TestIsAssignableToGenericType(Type testType, Type genericType, bool expectedResult)
+    {
+        Assert.Equal(expectedResult, testType.IsAssignableToGenericType(genericType));
+    }
+
+    [Theory]
     [InlineData(typeof(List<string>), true)]
     [InlineData(typeof(int[]), true)]
-    [InlineData(typeof(string), false)]
-    [InlineData(typeof(object), false )]
-    [InlineData(typeof(Hashtable), false )]
+    [InlineData(typeof(string), true)]
+    [InlineData(typeof(object), false)]
+    [InlineData(typeof(Hashtable), true)]
+    [InlineData(typeof(IEnumerable), true)]
+    [InlineData(typeof(ArrayList), true)]
     public void TestIsEnumerableType(Type testType, bool expectedResult)
     {
         Assert.Equal(expectedResult, testType.IsEnumerableType());
     }
 
     [Theory]
+    [InlineData(typeof(List<string>), typeof(string))]
+    [InlineData(typeof(int[]), typeof(int))]
+    [InlineData(typeof(string), typeof(char))]
+    [InlineData(typeof(object), null)]
+    [InlineData(typeof(Hashtable), typeof(KeyValuePair))]
+    [InlineData(typeof(IEnumerable), typeof(object))]
+    [InlineData(typeof(ArrayList), typeof(object))]
+    public void TestGetElementType(Type testType, Type? expectedElementType)
+    {
+        var actualElementType = testType.GetEnumerableElementType();
+        Assert.Equal(expectedElementType, actualElementType);
+    }
+
+    [Theory]
     [InlineData(typeof(List<string>), true)]
     [InlineData(typeof(int[]), true)]
     [InlineData(typeof(string), false)]
-    [InlineData(typeof(object), false )]
-    [InlineData(typeof(Hashtable), true )]
+    [InlineData(typeof(object), false)]
+    [InlineData(typeof(Hashtable), true)]
     public void TestIsCollectionType(Type testType, bool expectedResult)
     {
         Assert.Equal(expectedResult, testType.IsCollectionType());
     }
 
-   [Theory]
+    [Theory]
     [InlineData(typeof(Dictionary<string, object>), true)]
-    [InlineData(typeof(Hashtable), true )]
+    [InlineData(typeof(Hashtable), true)]
     [InlineData(typeof(List<string>), false)]
     public void TestIsDictionaryType(Type testType, bool expectedResult)
     {
@@ -127,21 +153,18 @@ public class ReflectionExtensionsTests
     [InlineData(typeof(bool), true)]
     [InlineData(typeof(int), true)]
     [InlineData(typeof(string), true)]
-    [InlineData(typeof(object), true )]
-    [InlineData(typeof(DateTime), false )]
+    [InlineData(typeof(object), true)]
+    [InlineData(typeof(DateTime), false)]
     [InlineData(typeof(int[]), false)]
     public void TestIsBuiltinType(Type testType, bool expectedResult)
     {
         Assert.Equal(expectedResult, testType.IsBuiltInType());
     }
 
-   [Theory]
+    [Theory]
     [InlineData(typeof(bool), "bool")]
-    [InlineData(typeof(Boolean), "bool")]
     [InlineData(typeof(int), "int")]
-    [InlineData(typeof(Int32), "int")]
     [InlineData(typeof(string), "string")]
-    [InlineData(typeof(String), "string")]
     [InlineData(typeof(int[]), "int[]")]
     [InlineData(typeof(List<string>), "List<string>")]
     public void TestGetFriendlyName(Type testType, string expectedResult)
