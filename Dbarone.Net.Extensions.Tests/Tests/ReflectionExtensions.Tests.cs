@@ -175,6 +175,8 @@ public class ReflectionExtensionsTests
     [Fact]
     public void TestGetExtensionMethods()
     {
+        // This test uses the IEnumerable.Cast extension method to cast an IEnumerable to another element type.
+        
         IEnumerable<object> items = new List<object> { 1, 2, 3, 4, 5, 6 };
         var test = items as IEnumerable<int>;
 
