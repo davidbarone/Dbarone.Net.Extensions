@@ -171,4 +171,24 @@ public class ReflectionExtensionsTests
     {
         Assert.Equal(expectedResult, testType.GetFriendlyName());
     }
+
+    [Fact]
+    public void TestGetExtensionMethods()
+    {
+        IEnumerable<object> items = new List<object> { 1, 2, 3, 4, 5, 6 };
+        var test = items as IEnumerable<int>;
+
+        Assert.Null(test);  // we can just cast IEnumerable<object> -> IEnumerable<int>
+
+        var type = (items as IEnumerable).GetType();
+        var extensionMethods = (typeof(IEnumerable)).GetExtensionMethods();
+        var castMethod = extensionMethods.First(m => m.Name == "Cast");
+        var decType = castMethod.DeclaringType;
+
+        // Line below should cast items to object which is essentially same as IEnumerable<int>, so
+        // can be cast safely to int[].
+        var results = ((IEnumerable<int>)castMethod.MakeGenericMethod(typeof(int)).Invoke(null, new object[] { items })).ToArray();
+
+        Assert.Equal(typeof(int[]), results.GetType());
+    }
 }

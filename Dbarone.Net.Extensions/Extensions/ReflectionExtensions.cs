@@ -564,4 +564,31 @@ public static class ReflectionExtensions
 
         return IsAssignableToGenericType(baseType, genericType);
     }
+
+    /// <summary>
+    /// Gets all extension methods in current domain that extend a particular type.
+    /// </summary>
+    /// <param name="extendedType">The type to search for extension methods.</param>
+    /// <returns>A sequence of MethodInfo objects representing the extension methods.</returns>
+    public static IEnumerable<MethodInfo> GetExtensionMethods(this Type extendedType)
+    {
+        var isGenericTypeDefinition = extendedType.IsGenericType && extendedType.IsTypeDefinition;
+
+        // Get all assemblies
+        List<Type> types = new List<Type>();
+        foreach (Assembly item in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            types.AddRange(item.GetTypes());
+        }
+
+        var query = from type in types
+                    where type.IsSealed && !type.IsGenericType && !type.IsNested
+                    from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                    where method.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false)
+                    where isGenericTypeDefinition
+                        ? method.GetParameters()[0].ParameterType.IsGenericType && method.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == extendedType
+                        : method.GetParameters()[0].ParameterType == extendedType
+                    select method;
+        return query;
+    }
 }
