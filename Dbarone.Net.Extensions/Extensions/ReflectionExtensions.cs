@@ -572,6 +572,7 @@ public static class ReflectionExtensions
     /// <returns>A sequence of MethodInfo objects representing the extension methods.</returns>
     public static IEnumerable<MethodInfo> GetExtensionMethods(this Type extendedType)
     {
+        // https://stackoverflow.com/questions/299515/reflection-to-identify-extension-methods
         var isGenericTypeDefinition = extendedType.IsGenericType && extendedType.IsTypeDefinition;
 
         // Get all assemblies
