@@ -180,7 +180,7 @@ public class ReflectionExtensionsTests
         IEnumerable<object> items = new List<object> { 1, 2, 3, 4, 5, 6 };
         var test = items as IEnumerable<int>;
 
-        Assert.Null(test);  // we can just cast IEnumerable<object> -> IEnumerable<int>
+        Assert.Null(test);  // cast IEnumerable<object> -> IEnumerable<int> not valid
 
         var type = (items as IEnumerable).GetType();
         var extensionMethods = (typeof(IEnumerable)).GetExtensionMethods();
