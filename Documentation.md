@@ -626,6 +626,19 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsAssignableToGenericType(Sys
 
 
 
+### method: ReflectionExtensions.GetExtensionMethods
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetExtensionMethods(System.Type)`
+
+ Gets all extension methods in current domain that extend a particular type. 
+
+
+
+|Name | Description |
+|-----|------|
+|extendedType: |The type to search for extension methods.|
+
+
+
 
 ---
 ## Dbarone.Net.Extensions.CaseType
