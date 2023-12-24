@@ -639,6 +639,17 @@ id: `M:Dbarone.Net.Extensions.ReflectionExtensions.GetExtensionMethods(System.Ty
 
 
 
+### method: ReflectionExtensions.IsDynamicType
+id: `M:Dbarone.Net.Extensions.ReflectionExtensions.IsDynamicType(System.Type)`
+
+ Returns true if the type is a dynamic type. 
+
+
+
+
+
+
+
 
 ---
 ## Dbarone.Net.Extensions.CaseType
