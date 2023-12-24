@@ -3,6 +3,7 @@ using Xunit;
 using System;
 using Dbarone.Net.Extensions;
 using System.Collections;
+using System.Dynamic;
 
 public class ReflectionExtensionsTests
 {
@@ -192,5 +193,17 @@ public class ReflectionExtensionsTests
         var results = ((IEnumerable<int>)castMethod.MakeGenericMethod(typeof(int)).Invoke(null, new object[] { items })).ToArray();
 
         Assert.Equal(typeof(int[]), results.GetType());
+    }
+
+    [Fact]
+    public void TestIsDynamicType() {
+        ExpandoObject obj = new ExpandoObject();
+        Assert.True(obj.GetType().IsDynamicType());
+    }
+
+    [Fact]
+    public void TestNotIsDynamicType() {
+        object obj = new object();
+        Assert.False(obj.GetType().IsDynamicType());
     }
 }

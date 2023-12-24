@@ -592,4 +592,9 @@ public static class ReflectionExtensions
                     select method;
         return query;
     }
+
+    /// <summary>
+    /// Returns true if the type is a dynamic type.
+    /// </summary>
+    public static bool IsDynamicType(this Type type) => typeof(System.Dynamic.IDynamicMetaObjectProvider).IsAssignableFrom(type);
 }
