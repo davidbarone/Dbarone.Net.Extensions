@@ -155,9 +155,11 @@ Foo         Bar              Baz
 Longer text Really Long Text         ")]
     [InlineData(@"Column_1|Column_2|Column_3
 Foo|Bar|Baz
-Longer text|Really Long Text|", 30, @"Column_1    Column_2         Column_3
-Foo         Bar              Baz     
-Longer text Really Long Text         ")]
+Longer text|Really Long Text|", 30, @"Column_1   Column_2   Column_3
+Foo        Bar        Baz     
+Longer     Really             
+text       Long               
+           Text               ")]
     public void Table(string input, int length, string expected)
     {
         var actual = input.Table(length, true, Environment.NewLine, "|");

@@ -376,7 +376,7 @@ public static class StringExtensions
             {
                 for (int j = 0; j < cellArray[i].Count; j++)
                 {
-                    cellArray[i][j] = cellArray[i][j].WordWrap(length, newLineChars);
+                    cellArray[i][j] = cellArray[i][j].WordWrap(columnWidths[j], newLineChars);
                 }
             }
         }
