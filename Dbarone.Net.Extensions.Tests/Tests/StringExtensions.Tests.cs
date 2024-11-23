@@ -125,12 +125,42 @@ public class StringExtensionTests
         var input = @"This is a test
 This is a really really really really long line.";
 
-        var actual = input.WordWrap(14);
+        var actual = input.WordWrap(14, Environment.NewLine);
 
         Assert.Equal(@"This is a test
 This is a
 really really
 really really
 long line.", string.Join(Environment.NewLine, actual));
+    }
+
+    [Fact]
+    public void Lines()
+    {
+        var str = @"1
+2
+3
+4
+5";
+
+        var actual = str.Lines(Environment.NewLine);
+        Assert.Equal(5, actual);
+    }
+
+    [Theory]
+    [InlineData(@"Column_1|Column_2|Column_3
+Foo|Bar|Baz
+Longer text|Really Long Text|", 50, @"Column_1    Column_2         Column_3
+Foo         Bar              Baz     
+Longer text Really Long Text         ")]
+    [InlineData(@"Column_1|Column_2|Column_3
+Foo|Bar|Baz
+Longer text|Really Long Text|", 30, @"Column_1    Column_2         Column_3
+Foo         Bar              Baz     
+Longer text Really Long Text         ")]
+    public void Table(string input, int length, string expected)
+    {
+        var actual = input.Table(length, true, Environment.NewLine, "|");
+        Assert.Equal(expected, actual);
     }
 }

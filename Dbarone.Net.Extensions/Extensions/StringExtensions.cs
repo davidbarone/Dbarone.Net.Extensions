@@ -252,17 +252,188 @@ public static class StringExtensions
     /// </summary>
     /// <param name="str">The input string</param>
     /// <param name="length">The length of the line to wrap.</param>
+    /// <param name="newLineChars">The new line string.</param>
     /// <returns>Returns wrapped text.</returns>
-    public static IEnumerable<string> WordWrap(this string str, int length)
+    public static string WordWrap(this string str, int length, string newLineChars)
     {
-        var lines = str.Split(Environment.NewLine);
+        var lines = str.Split(newLineChars);
         var inputArray = new List<string>();
 
         foreach (var line in lines)
         {
             inputArray.AddRange(WordWrapInternal(line, length));
         }
-        return inputArray;
+        return string.Join(newLineChars, inputArray);
+    }
+
+    public static string Table(this string table, int length, bool firstRowHeaders, string newLineChars, string columnSeparator)
+    {
+        List<List<string>> cells = new List<List<string>>();
+        var lines = table.Split(newLineChars);
+        foreach (var line in lines)
+        {
+            List<string> rowCells = line.Split(columnSeparator).ToList();
+            cells.Add(rowCells);
+        }
+        return cells.Table(length, firstRowHeaders, newLineChars);
+    }
+
+    /// <summary>
+    /// Takes a 2 dimensional array of cell values, and formats into a table.
+    /// </summary>
+    /// <param name="cells">2-dimensional array of cell values.</param>
+    /// <param name="length">width of the table.</param>
+    /// <param name="firstRowHeaders">Set to true if the first row are headers.</param>
+    /// <returns>Sequence of string values representing a table.</returns>
+    public static string Table(this IEnumerable<IEnumerable<string>> cells, int length, bool firstRowHeaders, string newLineChars)
+    {
+        // Algorithm:
+        // 1. Make sure all rows have same number of cells (columns)
+        // 2. Calculate number of cell separators required (columns - 1)
+        // 2. Loop through all rows, getting max length for each column
+        // 3. If maxlength <= length-cellseparators, then format each cell according its max length, join cells using space, and return array
+        // 4. Otherwise:
+        // 4.1 Take column with widest length, and reduce by and do wordwrap
+        // 4.2 If maxlength <= length-cellseparators, then format each cell according its max length, join cells using space, and return array
+        // 4.3 go to 4.1
+
+        if (cells is null)
+        {
+            throw new Exception("Must provide array of cells.");
+        }
+        if (cells.Count() == 0)
+        {
+            return "";
+        }
+        if (length < 0)
+        {
+            throw new Exception("Length must be positive");
+        }
+
+        List<List<string>> cellArray = new List<List<string>>();
+        foreach (var line in cells)
+        {
+            cellArray.Add(line.ToList());
+        }
+
+        int columns = 0;
+        foreach (var row in cellArray)
+        {
+            var c = row.Count();
+            if (columns == 0)
+            {
+                columns = c;
+            }
+            else
+            {
+                if (c != columns)
+                {
+                    throw new Exception("Cell array is ragged.");
+                }
+            }
+        }
+        List<int> columnWidths = new int[columns].ToList();
+        if (length < (columns * 2) - 1)
+        {
+            throw new Exception("Length too small.");
+        }
+        var separators = columns - 1;
+
+        // Get initial column widths
+        foreach (var row in cellArray)
+        {
+            for (int i = 0; i < row.Count(); i++)
+            {
+                var str = row[i];
+                var l = str.Length;
+                if (columnWidths[i] == 0)
+                {
+                    columnWidths[i] = l;
+                }
+                else if (l > columnWidths[i])
+                {
+                    columnWidths[i] = l;
+                }
+            }
+        }
+
+        while (columnWidths.Sum() > length - separators)
+        {
+            var index = 0;
+            var max = 0;
+            for (int i = 0; i < columnWidths.Count(); i++)
+            {
+                if (columnWidths[i] > max)
+                {
+                    max = columnWidths[i];
+                    index = i;
+                }
+            }
+            // reduce size of widest column
+            columnWidths[index] = columnWidths[index] - 1;
+
+            for (var i = 0; i < cellArray.Count(); i++)
+            {
+                for (int j = 0; j < cellArray[i].Count; j++)
+                {
+                    cellArray[i][j] = cellArray[i][j].WordWrap(length, newLineChars);
+                }
+            }
+        }
+
+        // At this point, all columns should be narrow enough to fit in table length.
+        // We need to scan each row, and pad all columns with newline characters, so
+        // all rows have same number of wrapped lines.
+        for (int i = 0; i < cellArray.Count(); i++)
+        {
+            int maxLines = 0;
+            for (int j = 0; j < cellArray[i].Count(); j++)
+            {
+                var lines = cellArray[i][j].Lines(newLineChars);
+                if (lines > maxLines)
+                {
+                    maxLines = lines;
+                }
+            }
+            for (int j = 0; j < cellArray[i].Count(); j++)
+            {
+                var lines = cellArray[i][j].Lines(newLineChars);
+                cellArray[i][j] = cellArray[i][j] + newLineChars.Repeat(maxLines - lines);
+            }
+        }
+
+        // At this point, all rows should fit into width, and all have same number of lines.
+        List<string> output = new List<string>();
+        for (int i = 0; i < cellArray.Count(); i++)
+        {
+            var lines = cellArray[i][0].Lines(newLineChars);
+            for (int l = 0; l < lines; l++)
+            {
+                var strArray = new List<string>();
+                for (int j = 0; j < cellArray[i].Count(); j++)
+                {
+                    strArray.Add(cellArray[i][j].Split(newLineChars)[l].Justify(columnWidths[j], Justification.LEFT));
+                }
+                output.Add(string.Join(" ", strArray));
+            }
+        }
+        return string.Join(newLineChars, output);
+    }
+
+    public static string Repeat(this string str, int count)
+    {
+        return string.Join("", Enumerable.Repeat(str, count));
+    }
+
+    /// <summary>
+    /// Returns the number of lines that a string contains.
+    /// </summary>
+    /// <param name="str">The string value.</param>
+    /// <param name="newLineChars">The newline characters.</param>
+    /// <returns>Returns the count of lines.</returns>
+    public static int Lines(this string str, string newLineChars)
+    {
+        return str.Split(newLineChars).Count();
     }
 
     /// <summary>
