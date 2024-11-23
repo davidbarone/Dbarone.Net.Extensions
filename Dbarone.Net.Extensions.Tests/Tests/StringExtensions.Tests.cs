@@ -118,4 +118,19 @@ public class StringExtensionTests
     {
         Assert.Equal(expectedResult, input.IsCase(@case));
     }
+
+    [Fact]
+    public void WordWrap()
+    {
+        var input = @"This is a test
+This is a really really really really long line.";
+
+        var actual = input.WordWrap(14);
+
+        Assert.Equal(@"This is a test
+This is a
+really really
+really really
+long line.", string.Join(Environment.NewLine, actual));
+    }
 }

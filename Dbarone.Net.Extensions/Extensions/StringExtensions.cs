@@ -211,13 +211,7 @@ public static class StringExtensions
         return stream;
     }
 
-    /// <summary>
-    /// Splits a string into chunks of [length] characters. Word breaks are avoided.
-    /// </summary>
-    /// <param name="str"></param>
-    /// <param name="length"></param>
-    /// <returns></returns>
-    public static IEnumerable<string> WordWrap(this string str, int length)
+    private static IEnumerable<string> WordWrapInternal(string str, int length)
     {
         if (str == null)
             throw new ArgumentNullException("s");
@@ -251,6 +245,24 @@ public static class StringExtensions
             i += j;
             yield return result;
         }
+    }
+
+    /// <summary>
+    /// Splits a string into chunks of [length] characters. Word breaks are avoided.
+    /// </summary>
+    /// <param name="str">The input string</param>
+    /// <param name="length">The length of the line to wrap.</param>
+    /// <returns>Returns wrapped text.</returns>
+    public static IEnumerable<string> WordWrap(this string str, int length)
+    {
+        var lines = str.Split(Environment.NewLine);
+        var inputArray = new List<string>();
+
+        foreach (var line in lines)
+        {
+            inputArray.AddRange(WordWrapInternal(line, length));
+        }
+        return inputArray;
     }
 
     /// <summary>
