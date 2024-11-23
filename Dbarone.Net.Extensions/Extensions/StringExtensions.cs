@@ -406,6 +406,17 @@ public static class StringExtensions
         List<string> output = new List<string>();
         for (int i = 0; i < cellArray.Count(); i++)
         {
+            if (i == 1 && firstRowHeaders)
+            {
+                // draw headers
+                List<string> headerLines = new List<string>();
+                for (int j = 0; j < cellArray[i].Count; j++)
+                {
+                    headerLines.Add("-".Repeat(columnWidths[j]));
+                }
+                output.Add(string.Join(" ", headerLines));
+            }
+
             var lines = cellArray[i][0].Lines(newLineChars);
             for (int l = 0; l < lines; l++)
             {

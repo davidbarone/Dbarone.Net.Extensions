@@ -151,11 +151,13 @@ long line.", string.Join(Environment.NewLine, actual));
     [InlineData(@"Column_1|Column_2|Column_3
 Foo|Bar|Baz
 Longer text|Really Long Text|", 50, @"Column_1    Column_2         Column_3
+----------- ---------------- --------
 Foo         Bar              Baz     
 Longer text Really Long Text         ")]
     [InlineData(@"Column_1|Column_2|Column_3
 Foo|Bar|Baz
 Longer text|Really Long Text|", 30, @"Column_1   Column_2   Column_3
+---------- ---------- --------
 Foo        Bar        Baz     
 Longer     Really             
 text       Long               
